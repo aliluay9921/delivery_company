@@ -73,7 +73,7 @@ class CustomersController extends Controller
     {
         $request = $request->json()->all();
         $validator = Validator::make($request, [
-            'customer_id'       => 'required|exists:customers,id',
+            'customer_id'                => 'required|exists:customers,id',
         ], [
             'customer_id.required'       => 'يجب ادخال العميل المراد التعديل على معلوماته',
             'customer_id.exists'         => 'العميل الذي قمت بأدخالة غير متوفر',
