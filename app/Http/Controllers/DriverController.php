@@ -101,4 +101,19 @@ class DriverController extends Controller
         $driver->update($data);
         return $this->send_response(200, 'تم التعديل على معلومات المندوب', [], $driver);
     }
+    public function deleteDriver(Request $request)
+    {
+        $request = $request->json()->all();
+        $validator = Validator::make($request, [
+            'driver_id'       => 'required|exists:drivers,id',
+        ], [
+            'driver_id.required'       => 'يجب ادخال المندوب المراد التعديل على معلوماته',
+            'driver_id.exists'         => 'المندوب الذي قمت بأدخالة غير متوفر',
+        ]);
+        if ($validator->fails()) {
+            return $this->send_response(401, 'خطأ بالمدخلات', $validator->errors(), []);
+        }
+        Driver::find($request['driver_id'])->delete();
+        return $this->send_response(200, 'تم حذف المندوب', [], []);
+    }
 }

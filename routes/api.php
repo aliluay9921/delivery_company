@@ -33,5 +33,10 @@ Route::middleware(['auth:api'])->group(function () {
 
         Route::put('edit_user', [UserController::class, 'editUser']);
         Route::put('edit_driver', [DriverController::class, 'editDriver']);
+
+
+        Route::delete('delete_user', [UserController::class, 'deleteUser']);
+        Route::delete('delete_driver', [DriverController::class, 'deleteDriver']);
+        Route::delete('delete_customer', [CustomersController::class, 'deleteCustomer']);
     });
 });

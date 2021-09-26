@@ -69,4 +69,19 @@ class CustomersController extends Controller
         $new = Customer::Create($data);
         return $this->send_response(200, 'تم اضافة موضف جديد', [], $new);
     }
+    public function deleteCustomer(Request $request)
+    {
+        $request = $request->json()->all();
+        $validator = Validator::make($request, [
+            'customer_id'       => 'required|exists:customers,id',
+        ], [
+            'customer_id.required'       => 'يجب ادخال العميل المراد التعديل على معلوماته',
+            'customer_id.exists'         => 'العميل الذي قمت بأدخالة غير متوفر',
+        ]);
+        if ($validator->fails()) {
+            return $this->send_response(401, 'خطأ بالمدخلات', $validator->errors(), []);
+        }
+        Customer::find($request['customer_id'])->delete();
+        return $this->send_response(200, 'تم حذف العميل', [], []);
+    }
 }

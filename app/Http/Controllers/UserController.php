@@ -103,4 +103,20 @@ class UserController extends Controller
         $user->permissions()->sync($request['permission_id']);
         return $this->send_response(200, 'تم التعديل على معلومات الموضف', [], $user);
     }
+
+    public function deleteUser(Request $request)
+    {
+        $request = $request->json()->all();
+        $validator = Validator::make($request, [
+            'user_id'       => 'required|exists:users,id',
+        ], [
+            'user_id.required'       => 'يجب ادخال المتسخدم المراد التعديل على معلوماته',
+            'user_id.exists'         => 'المستخدم الذي قمت بأدخالة غير متوفر',
+        ]);
+        if ($validator->fails()) {
+            return $this->send_response(401, 'خطأ بالمدخلات', $validator->errors(), []);
+        }
+        User::find($request['user_id'])->delete();
+        return $this->send_response(200, 'تم حذف المستخدم', [], []);
+    }
 }
