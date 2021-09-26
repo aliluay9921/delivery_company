@@ -41,7 +41,7 @@ class UserController extends Controller
             'password'      => 'required|min:6',
             'address'       => 'required',
             'salary'        => 'required',
-            'permission_id' => 'required'
+            'permission_id' => 'required|exists:permissions,id'
         ], [
             'full_name.required' => 'يجب ادخال الاسم الكامل للموضف الجديد ',
             'phone_number.required' => 'يرجى ادخال رقم هاتف للموضف ',
@@ -52,7 +52,8 @@ class UserController extends Controller
             'password.min' => 'يجب ان تكون كلمة المرور على الاقل 6',
             'address.required' => 'عنوان الموضف مطلوب',
             'salary.required' => 'يرجى ادخال راتب الموضف ',
-            'permission_id.required' => 'يرجى ادخال الوضيفة التي يعمل بها هذا الموضف'
+            'permission_id.required' => 'يرجى ادخال الوضيفة التي يعمل بها هذا الموضف',
+            'permission_id.exists' => 'يرجى ادخال معلومات صلاحية صحيحه',
         ]);
         if ($validator->fails()) {
             return $this->send_response(401, 'خطأ بالمدخلات', $validator->errors(), []);
