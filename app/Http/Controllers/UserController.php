@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Permission;
 use App\Models\User;
 use App\Traits\Pagination;
 use App\Traits\SendResponse;
@@ -25,6 +26,11 @@ class UserController extends Controller
         $res = $this->paging($users,  $_GET['skip'],  $_GET['limit']);
         return $this->send_response(200, 'تم جلب المستخدمين بنجاح', [], $res["model"], null, $res["count"]);
     }
+    public function getPermissions()
+    {
+        $permissions = Permission::all();
+        return $this->send_response(200, 'تم جلب الصلاحيات بنجاح', [], $permissions);
+    }
 
     public function addUser(Request $request)
     {
@@ -35,7 +41,7 @@ class UserController extends Controller
             'password'      => 'required|min:6',
             'address'       => 'required',
             'salary'        => 'required',
-            'permission_id' => 'required'
+            'permission_id' => 'required|exists:permissions,id'
         ], [
             'full_name.required' => 'يجب ادخال الاسم الكامل للموضف الجديد ',
             'phone_number.required' => 'يرجى ادخال رقم هاتف للموضف ',
@@ -46,7 +52,8 @@ class UserController extends Controller
             'password.min' => 'يجب ان تكون كلمة المرور على الاقل 6',
             'address.required' => 'عنوان الموضف مطلوب',
             'salary.required' => 'يرجى ادخال راتب الموضف ',
-            'permission_id.required' => 'يرجى ادخال الوضيفة التي يعمل بها هذا الموضف'
+            'permission_id.required' => 'يرجى ادخال الوضيفة التي يعمل بها هذا الموضف',
+            'permission_id.exists' => 'يرجى ادخال معلومات صلاحية صحيحه',
         ]);
         if ($validator->fails()) {
             return $this->send_response(401, 'خطأ بالمدخلات', $validator->errors(), []);

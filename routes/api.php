@@ -34,6 +34,7 @@ Route::middleware(['auth:api'])->group(function () {
 
     Route::middleware(['admin'])->group(function () {
         Route::get('get_users', [UserController::class, 'getUsers']);
+        Route::get('get_permissions', [UserController::class, 'getPermissions']);
 
 
         Route::post('add_delivery_price', [DeliveryPriceController::class, 'addDeliveryPrice']);
