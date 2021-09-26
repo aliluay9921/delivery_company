@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Permission;
 use App\Models\User;
 use App\Traits\Pagination;
 use App\Traits\SendResponse;
@@ -24,6 +25,11 @@ class UserController extends Controller
             $_GET['limit'] = 10;
         $res = $this->paging($users,  $_GET['skip'],  $_GET['limit']);
         return $this->send_response(200, 'تم جلب المستخدمين بنجاح', [], $res["model"], null, $res["count"]);
+    }
+    public function getPermissions()
+    {
+        $permissions = Permission::all();
+        return $this->send_response(200, 'تم جلب الصلاحيات بنجاح', [], $permissions);
     }
 
     public function addUser(Request $request)
