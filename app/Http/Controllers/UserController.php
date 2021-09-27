@@ -24,7 +24,7 @@ class UserController extends Controller
                 if ($key == 'skip' || $key == 'limit') {
                     continue;
                 } else {
-                    $users->orderBy($key, $value);
+                    $users->orderBy($key, $value == true ? 'DESC' : 'ASC');
                 }
             }
         }
