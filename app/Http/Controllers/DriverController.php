@@ -73,15 +73,17 @@ class DriverController extends Controller
             'phone_number2'      => 'min:11|max:11|unique:drivers,phone_number,' . $driver->id,
             'address'       => 'required',
         ], [
-            'name.required' => 'يجب ادخال أسم العميل  ',
-            'phone_number.required' => 'يرجى ادخال رقم هاتف للموضف ',
+            'driver_id.required' => 'يجب ادخال مندوب',
+            'driver_id.exists' => 'يجب ادخال مندوب صحيح',
+            'name.required' => 'يجب ادخال أسم المندوب  ',
+            'phone_number.required' => 'يرجى ادخال رقم هاتف للمندوب ',
             'phone_number.unique' => 'رقم الهاتف مستخدم سابقاً',
             'phone_number.min' => 'يرجى ادخال رقم هاتف صالح ',
             'phone_number.max' => 'يرجى ادخال رقم هاتف صالح',
             'phone_number2.unique' => 'رقم الهاتف مستخدم سابقاً',
             'phone_number2.min' => 'يرجى ادخال رقم هاتف صالح ',
             'phone_number2.max' => 'يرجى ادخال رقم هاتف صالح',
-            'address.required' => 'عنوان العميل مطلوب',
+            'address.required' => 'عنوان المندوب مطلوب',
         ]);
         if ($validator->fails()) {
             return $this->send_response(401, 'خطأ بالمدخلات', $validator->errors(), []);
@@ -94,6 +96,9 @@ class DriverController extends Controller
         ];
         if (array_key_exists('number_car', $request)) {
             $data['number_car'] = $request['number_car'];
+        }
+        if (array_key_exists('phone_number2', $request)) {
+            $data['phone_number2'] = $request['phone_number2'];
         }
         if (array_key_exists('type_vehicle', $request)) {
             $data['type_vehicle'] = $request['type_vehicle'];
@@ -115,5 +120,23 @@ class DriverController extends Controller
         }
         Driver::find($request['driver_id'])->delete();
         return $this->send_response(200, 'تم حذف المندوب', [], []);
+    }
+    public function toggleActiveDriver(Request $request)
+    {
+        $request = $request->json()->all();
+        $validator = Validator::make($request, [
+            'driver_id' => 'required|exists:drivers,id',
+        ], [
+            'driver_id.required' => 'يجب ادخال العميل',
+            'driver_id.exists' => 'العميل الذي قمت بأدخالة غير صحيح'
+        ]);
+        if ($validator->fails()) {
+            return $this->send_response(401, 'خطأ بالمدخلات', $validator->errors(), []);
+        }
+        $driver = Driver::find($request['driver_id']);
+        $driver->update([
+            'active' => !$driver->active
+        ]);
+        return $this->send_response(200, 'تم تغيرر حالة العميل', [], $driver);
     }
 }

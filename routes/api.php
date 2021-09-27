@@ -6,6 +6,7 @@ use App\Http\Controllers\DeliveryPriceController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\GoodReceviedController;
 use App\Http\Controllers\UserController;
+use App\Models\Customer;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -42,8 +43,12 @@ Route::middleware(['auth:api'])->group(function () {
         Route::post('add_customers', [CustomersController::class, 'addCustomers']);
         Route::post('add_driver', [DriverController::class, 'addDriver']);
 
+        Route::put('toggle_active_user', [UserController::class, 'toggleActiveUser']);
+        Route::put('toggle_active_customer', [CustomersController::class, 'toggleActiveCustomer']);
+        Route::put('toggle_active_driver', [DriverController::class, 'toggleActiveDriver']);
         Route::put('edit_user', [UserController::class, 'editUser']);
         Route::put('edit_driver', [DriverController::class, 'editDriver']);
+        Route::put('edit_customer', [CustomersController::class, 'editCustomer']);
 
 
         Route::delete('delete_user', [UserController::class, 'deleteUser']);

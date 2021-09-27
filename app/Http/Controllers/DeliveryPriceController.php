@@ -14,7 +14,6 @@ class DeliveryPriceController extends Controller
     public function getDeliveryPrice()
     {
         $get = DeliveryPrice::all();
-
         return $this->send_response(200, 'تم جلب الاسعار بنجاح', [], $get);
     }
     public function addDeliveryPrice(Request $request)

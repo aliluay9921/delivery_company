@@ -56,7 +56,6 @@ class CustomersController extends Controller
                 $code = substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 6);
             }
         }
-
         $data = [
             'name' => $request['name'],
             'phone_number' => $request['phone_number'],
@@ -68,6 +67,42 @@ class CustomersController extends Controller
         }
         $new = Customer::Create($data);
         return $this->send_response(200, 'تم اضافة موضف جديد', [], $new);
+    }
+    public function editCustomer(Request $request)
+    {
+        $request = $request->json()->all();
+        $customer = Customer::find($request['customer_id']);
+        $validator = Validator::make($request, [
+            'customer_id' => 'required|exists:customers,id',
+            'name'     => 'required',
+            'phone_number'  => 'required|min:11|max:11|unique:customers,phone_number,' . $customer->id,
+            'phone_number2'      => 'min:11|max:11|unique:customers,phone_number,' . $customer->id,
+            'address'       => 'required',
+        ], [
+            'name.required' => 'يجب ادخال أسم العميل  ',
+            'phone_number.required' => 'يرجى ادخال رقم هاتف للعميل ',
+            'phone_number.unique' => 'رقم الهاتف مستخدم سابقاً',
+            'phone_number.min' => 'يرجى ادخال رقم هاتف صالح ',
+            'phone_number.max' => 'يرجى ادخال رقم هاتف صالح',
+            'phone_number2.unique' => 'رقم الهاتف مستخدم سابقاً',
+            'phone_number2.min' => 'يرجى ادخال رقم هاتف صالح ',
+            'phone_number2.max' => 'يرجى ادخال رقم هاتف صالح',
+            'address.required' => 'عنوان العميل مطلوب',
+        ]);
+        if ($validator->fails()) {
+            return $this->send_response(401, 'خطأ بالمدخلات', $validator->errors(), []);
+        }
+        $data = [];
+        $data = [
+            'name' => $request['name'],
+            'phone_number' => $request['phone_number'],
+            'address' => $request['address'],
+        ];
+        if (array_key_exists('phone_number2', $request)) {
+            $data['phone_number2'] = $request['phone_number2'];
+        }
+        $customer->update($data);
+        return $this->send_response(200, 'تم التعديل على معلومات العميل', [], $customer);
     }
     public function deleteCustomer(Request $request)
     {
@@ -83,5 +118,23 @@ class CustomersController extends Controller
         }
         Customer::find($request['customer_id'])->delete();
         return $this->send_response(200, 'تم حذف العميل', [], []);
+    }
+    public function toggleActiveCustomer(Request $request)
+    {
+        $request = $request->json()->all();
+        $validator = Validator::make($request, [
+            'customer_id' => 'required|exists:customers,id',
+        ], [
+            'customer_id.required' => 'يجب ادخال العميل',
+            'customer_id.exists' => 'العميل الذي قمت بأدخالة غير صحيح'
+        ]);
+        if ($validator->fails()) {
+            return $this->send_response(401, 'خطأ بالمدخلات', $validator->errors(), []);
+        }
+        $customer = Customer::find($request['customer_id']);
+        $customer->update([
+            'active' => !$customer->active
+        ]);
+        return $this->send_response(200, 'تم تغيرر حالة العميل', [], $customer);
     }
 }

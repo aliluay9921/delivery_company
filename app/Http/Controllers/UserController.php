@@ -19,6 +19,15 @@ class UserController extends Controller
             return $this->send_response(200, 'تم جلب المنشور بنجاح', [], $user);
         }
         $users = User::with('permissions');
+        if (isset($_GET)) {
+            foreach ($_GET as $key => $value) {
+                if ($key == 'skip' || $key == 'limit') {
+                    continue;
+                } else {
+                    $users->orderBy($key, $value);
+                }
+            }
+        }
         if (!isset($_GET['skip']))
             $_GET['skip'] = 0;
         if (!isset($_GET['limit']))
@@ -125,5 +134,23 @@ class UserController extends Controller
         }
         User::find($request['user_id'])->delete();
         return $this->send_response(200, 'تم حذف المستخدم', [], []);
+    }
+    public function toggleActiveUser(Request $request)
+    {
+        $request = $request->json()->all();
+        $validator = Validator::make($request, [
+            'user_id' => 'required|exists:users,id',
+        ], [
+            'user_id.required' => 'يجب ادخال موضف',
+            'user_id.exists' => 'الموضف الذي قمت بأدخالة غير صحيح'
+        ]);
+        if ($validator->fails()) {
+            return $this->send_response(401, 'خطأ بالمدخلات', $validator->errors(), []);
+        }
+        $user = User::find($request['user_id']);
+        $user->update([
+            'active' => !$user->active
+        ]);
+        return $this->send_response(200, 'تم تغيرر حالة الموضف', [], $user);
     }
 }

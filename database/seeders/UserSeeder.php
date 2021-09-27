@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $permission_admin = Permission::where('name', 'add_user')->first();
+        $permission_admin = Permission::where('name', 'admin')->first();
         $admin = User::create([
             'full_name'     => 'Admin',
             'phone_number'  => '07713982401',
