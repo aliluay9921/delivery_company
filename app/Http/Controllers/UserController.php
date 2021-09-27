@@ -24,10 +24,12 @@ class UserController extends Controller
                 if ($key == 'skip' || $key == 'limit') {
                     continue;
                 } else {
-                    $users->orderBy($key, $value == true ? 'DESC' : 'ASC');
+                    $sort = $value == 'true' ? 'desc' : 'asc';
+                    $users->orderBy($key,  $sort);
                 }
             }
         }
+        // return $users;
         if (!isset($_GET['skip']))
             $_GET['skip'] = 0;
         if (!isset($_GET['limit']))
