@@ -85,7 +85,7 @@ class UserController extends Controller
             'salary' => $request['salary'],
         ]);
         $user->permissions()->sync($request['permission_id']);
-        return $this->send_response(200, 'تم اضافة موضف جديد', [], $user);
+        return $this->send_response(200, 'تم اضافة موضف جديد', [], User::with('permissions')->find($user->id));
     }
 
     public function editUser(Request $request)
@@ -97,7 +97,7 @@ class UserController extends Controller
             'user_id'       => 'required|exists:users,id',
             'full_name'     => 'required',
             'phone_number'  => 'required|min:11|max:11|unique:users,phone_number,' . $user->id,
-            'password'      => 'required|min:6',
+            'password'      => 'min:6',
             'address'       => 'required',
             'salary'        => 'required',
             'permission_id' => 'required'
@@ -109,7 +109,6 @@ class UserController extends Controller
             'phone_number.unique'    => 'رقم الهاتف مستخدم سابقاً',
             'phone_number.min'       => 'يرجى ادخال رقم هاتف صالح ',
             'phone_number.max'       => 'يرجى ادخال رقم هاتف صالح',
-            'password.required'      => 'يرجى ادخال كلمة مرور خاصة بالموضف',
             'password.min'           => 'يجب ان تكون كلمة المرور على الاقل 6',
             'address.required'       => 'عنوان الموضف مطلوب',
             'salary.required'        => 'يرجى ادخال راتب الموضف ',
@@ -118,15 +117,19 @@ class UserController extends Controller
         if ($validator->fails()) {
             return $this->send_response(401, 'خطأ بالمدخلات', $validator->errors(), []);
         }
-        $user->update([
+        $data = [];
+        $data = [
             'full_name' => $request['full_name'],
             'phone_number' => $request['phone_number'],
-            'password' => bcrypt($request['password']),
             'address' => $request['address'],
             'salary' => $request['salary'],
-        ]);
+        ];
+        if (array_key_exists('passwprd', $request)) {
+            $data['password'] = bcrypt($request['password']);
+        }
+        $user->update($data);
         $user->permissions()->sync($request['permission_id']);
-        return $this->send_response(200, 'تم التعديل على معلومات الموضف', [], $user);
+        return $this->send_response(200, 'تم التعديل على معلومات الموضف', [], User::with('permissions')->find($request['user_id']));
     }
 
     public function deleteUser(Request $request)

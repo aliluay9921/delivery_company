@@ -6,6 +6,7 @@ use App\Models\Driver;
 use App\Traits\Pagination;
 use App\Traits\SendResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 
 class DriverController extends Controller
@@ -18,6 +19,22 @@ class DriverController extends Controller
             return $this->send_response(200, 'تم جلب ألمندوب بنجاح', [], $driver);
         }
         $drivers = Driver::select('id', 'name', 'phone_number', 'phone_number2', 'address', 'number_car', 'type_vehicle');
+        if (isset($_GET['query'])) {
+            $columns = Schema::getColumnListing('drivers');
+            foreach ($columns as $column) {
+                $drivers->orWhere($column, 'LIKE', '%' . $_GET['query'] . '%');
+            }
+        }
+        if (isset($_GET)) {
+            foreach ($_GET as $key => $value) {
+                if ($key == 'skip' || $key == 'limit' || $key == 'query') {
+                    continue;
+                } else {
+                    $sort = $value == 'true' ? 'desc' : 'asc';
+                    $drivers->orderBy($key,  $sort);
+                }
+            }
+        }
         if (!isset($_GET['skip']))
             $_GET['skip'] = 0;
         if (!isset($_GET['limit']))

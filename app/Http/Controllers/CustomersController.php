@@ -6,6 +6,8 @@ use App\Models\Customer;
 use App\Traits\Pagination;
 use App\Traits\SendResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
+
 use Illuminate\Support\Facades\Validator;
 
 class CustomersController extends Controller
@@ -19,6 +21,22 @@ class CustomersController extends Controller
             return $this->send_response(200, 'تم جلب العميل بنجاح', [], $customer);
         }
         $customers = Customer::select('id', 'name', 'phone_number', 'phone_number2', 'address', 'code');
+        if (isset($_GET['query'])) {
+            $columns = Schema::getColumnListing('customers');
+            foreach ($columns as $column) {
+                $customers->orWhere($column, 'LIKE', '%' . $_GET['query'] . '%');
+            }
+        }
+        if (isset($_GET)) {
+            foreach ($_GET as $key => $value) {
+                if ($key == 'skip' || $key == 'limit' || $key == 'query') {
+                    continue;
+                } else {
+                    $sort = $value == 'true' ? 'desc' : 'asc';
+                    $customers->orderBy($key,  $sort);
+                }
+            }
+        }
         if (!isset($_GET['skip']))
             $_GET['skip'] = 0;
         if (!isset($_GET['limit']))
