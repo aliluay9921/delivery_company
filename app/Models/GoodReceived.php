@@ -18,6 +18,6 @@ class GoodReceived extends Model
     }
     public function delevery_price()
     {
-        return $this->belongsTo(DeliveryPrice::class, 'delevery_price_id');
+        return $this->belongsTo(DeliveryPrice::class, 'delivery_price_id');
     }
 }

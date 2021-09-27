@@ -17,10 +17,10 @@ class CustomersController extends Controller
     public function getCustomers()
     {
         if (isset($_GET['customer_id'])) {
-            $customer = Customer::find($_GET['customer_id']);
+            $customer = Customer::with('goodsRecevied')->find($_GET['customer_id']);
             return $this->send_response(200, 'تم جلب العميل بنجاح', [], $customer);
         }
-        $customers = Customer::select('id', 'name', 'phone_number', 'phone_number2', 'address', 'code');
+        $customers = Customer::with('goodsRecevied')->withCount('goodsRecevied');
         if (isset($_GET['query'])) {
             $columns = Schema::getColumnListing('customers');
             foreach ($columns as $column) {

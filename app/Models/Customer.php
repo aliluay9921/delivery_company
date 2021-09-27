@@ -12,4 +12,10 @@ class Customer extends Model
     use HasFactory, Uuids, SoftDeletes;
     protected $guarded = [];
     protected $dates = ['deleted_at'];
+
+
+    public function goodsRecevied()
+    {
+        return $this->hasMany(GoodReceived::class, 'customer_id');
+    }
 }
