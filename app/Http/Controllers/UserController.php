@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Traits\Pagination;
 use App\Traits\SendResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -19,9 +20,15 @@ class UserController extends Controller
             return $this->send_response(200, 'تم جلب المنشور بنجاح', [], $user);
         }
         $users = User::with('permissions');
+        if (isset($_GET['query'])) {
+            $columns = Schema::getColumnListing('users');
+            foreach ($columns as $column) {
+                $users->orWhere($column, 'LIKE', '%' . $_GET['query'] . '%');
+            }
+        }
         if (isset($_GET)) {
             foreach ($_GET as $key => $value) {
-                if ($key == 'skip' || $key == 'limit') {
+                if ($key == 'skip' || $key == 'limit' || $key == 'query') {
                     continue;
                 } else {
                     $sort = $value == 'true' ? 'desc' : 'asc';
