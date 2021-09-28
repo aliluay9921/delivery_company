@@ -43,6 +43,7 @@ Route::middleware(['auth:api'])->group(function () {
         Route::post('add_customers', [CustomersController::class, 'addCustomers']);
         Route::post('add_driver', [DriverController::class, 'addDriver']);
 
+        Route::put('toggle_active_delivery_price', [DeliveryPriceController::class, 'toggleActiveDeliveryPrice']);
         Route::put('toggle_active_user', [UserController::class, 'toggleActiveUser']);
         Route::put('toggle_active_customer', [CustomersController::class, 'toggleActiveCustomer']);
         Route::put('toggle_active_driver', [DriverController::class, 'toggleActiveDriver']);

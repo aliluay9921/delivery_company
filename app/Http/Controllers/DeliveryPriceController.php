@@ -46,4 +46,22 @@ class DeliveryPriceController extends Controller
         DeliveryPrice::find($request['delivery_price_id'])->delete();
         return $this->send_response(200, 'تم حذف المستخدم', [], []);
     }
+    public function toggleActiveDeliveryPrice(Request $request)
+    {
+        $request = $request->json()->all();
+        $validator = Validator::make($request, [
+            'delivery_price_id' => 'required|exists:delivery_prices,id'
+        ], [
+            'delivery_price_id.required' => 'يرجى ادخال قيمة لتغير حالة التسعير',
+            'delivery_price_id.exists' => 'القيمة التي قمت بأدخالها غير صحيحة',
+        ]);
+        if ($validator->fails()) {
+            return $this->send_response(401, 'خطأ بالمدخلات', $validator->errors(), []);
+        }
+        $delivery_price = DeliveryPrice::find($request['delivery_price_id']);
+        $delivery_price->update([
+            'active' => !$delivery_price
+        ]);
+        return $this->send_response(200, 'تم تغيرر حالة التسعيرة', [], $delivery_price);
+    }
 }
