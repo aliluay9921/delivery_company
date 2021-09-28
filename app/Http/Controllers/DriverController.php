@@ -80,7 +80,7 @@ class DriverController extends Controller
             $data['type_vehicle'] = $request['type_vehicle'];
         }
         $driver = Driver::create($data);
-        return $this->send_response(200, 'تم اضافة مندوب جديد', [], $driver);
+        return $this->send_response(200, 'تم اضافة مندوب جديد', [], Driver::find($driver->id));
     }
     public function editDriver(Request $request)
     {
