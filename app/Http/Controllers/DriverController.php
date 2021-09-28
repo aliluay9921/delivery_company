@@ -73,6 +73,9 @@ class DriverController extends Controller
         if (array_key_exists('number_car', $request)) {
             $data['number_car'] = $request['number_car'];
         }
+        if (array_key_exists('phone_number2', $request)) {
+            $data['phone_number2'] = $request['phone_number2'];
+        }
         if (array_key_exists('type_vehicle', $request)) {
             $data['type_vehicle'] = $request['type_vehicle'];
         }
