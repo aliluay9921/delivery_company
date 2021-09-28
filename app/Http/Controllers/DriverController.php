@@ -18,7 +18,7 @@ class DriverController extends Controller
             $driver = Driver::find($_GET['driver_id']);
             return $this->send_response(200, 'تم جلب ألمندوب بنجاح', [], $driver);
         }
-        $drivers = Driver::select('id', 'name', 'phone_number', 'phone_number2', 'address', 'number_car', 'type_vehicle');
+        $drivers = Driver::select('id', 'name', 'phone_number', 'phone_number2', 'address', 'number_car', 'type_vehicle', 'active', 'balance');
         if (isset($_GET['query'])) {
             $columns = Schema::getColumnListing('drivers');
             foreach ($columns as $column) {
