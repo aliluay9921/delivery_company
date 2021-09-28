@@ -36,7 +36,7 @@ class DeliveryPriceController extends Controller
         if (!isset($_GET['limit']))
             $_GET['limit'] = 10;
         $res = $this->paging($get,  $_GET['skip'],  $_GET['limit']);
-        return $this->send_response(200, 'تم جلب الاسعار بنجاح', [], $res);
+        return $this->send_response(200, 'تم جلب العملاء بنجاح', [], $res["model"], null, $res["count"]);
     }
     public function addDeliveryPrice(Request $request)
     {
