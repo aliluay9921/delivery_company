@@ -28,7 +28,7 @@ class DeliveryPriceController extends Controller
             return $this->send_response(401, 'خطأ بالمدخلات', $validator->errors(), []);
         }
         $add = DeliveryPrice::create($request);
-        return $this->send_response(200, 'تم اضافة سعر جديد', [], $add);
+        return $this->send_response(200, 'تم اضافة سعر جديد', [], DeliveryPrice::find($add->id));
     }
 
     public function deleteDeliveryPrice(Request $request)
