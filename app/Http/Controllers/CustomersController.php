@@ -49,16 +49,14 @@ class CustomersController extends Controller
         $request = $request->json()->all();
         $validator = Validator::make($request, [
             'name'     => 'required',
-            'phone_number'  => 'required|unique:customers,phone_number|min:11|max:11',
+            'phone_number'  => 'required|min:11|max:11',
             'phone_number2'      => 'nullable|phone_number|min:11|max:11',
             'address'       => 'required',
         ], [
             'name.required' => 'يجب ادخال أسم العميل  ',
             'phone_number.required' => 'يرجى ادخال رقم هاتف للموضف ',
-            'phone_number.unique' => 'رقم الهاتف مستخدم سابقاً',
             'phone_number.min' => 'يرجى ادخال رقم هاتف صالح ',
             'phone_number.max' => 'يرجى ادخال رقم هاتف صالح',
-            'phone_number2.unique' => 'رقم الهاتف مستخدم سابقاً',
             'phone_number2.min' => 'يرجى ادخال رقم هاتف صالح ',
             'phone_number2.max' => 'يرجى ادخال رقم هاتف صالح',
             'address.required' => 'عنوان العميل مطلوب',

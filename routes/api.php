@@ -33,7 +33,8 @@ Route::middleware(['auth:api'])->group(function () {
 
 
 
-    Route::post('add_goods_to_driver', [GoodDriverController::class, 'addGoodToDriver']);
+    Route::get('get_check', [GoodDriverController::class, 'getCheck']);
+    Route::post('add_check', [GoodDriverController::class, 'addCheck']);
 
 
 
