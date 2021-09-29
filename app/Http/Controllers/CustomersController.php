@@ -50,7 +50,7 @@ class CustomersController extends Controller
         $validator = Validator::make($request, [
             'name'     => 'required',
             'phone_number'  => 'required|min:11|max:11',
-            'phone_number2'      => 'nullable|phone_number|min:11|max:11',
+            'phone_number2'      => 'nullable|min:11|max:11',
             'address'       => 'required',
         ], [
             'name.required' => 'يجب ادخال أسم العميل  ',
