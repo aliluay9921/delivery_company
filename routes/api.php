@@ -27,11 +27,14 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('get_customers', [CustomersController::class, 'getCustomers']);
     Route::get('get_drivers', [DriverController::class, 'getDrivers']);
     Route::get('get_delivery_price', [DeliveryPriceController::class, 'getDeliveryPrice']);
+    Route::get('get_goods_in_store', [GoodReceviedController::class, 'getGoodsInStore']);
+
 
 
 
     Route::post('add_goods_to_store', [GoodReceviedController::class, 'addGoodsToStore']);
     Route::put('edit_goods_in_store', [GoodReceviedController::class, 'editGoodsInStore']);
+    Route::put('change_status_goods', [GoodReceviedController::class, 'changeGoodsStatus']);
 
 
     Route::middleware(['admin'])->group(function () {
