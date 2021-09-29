@@ -133,7 +133,6 @@ class GoodReceviedController extends Controller
             'content' => $request['content'],
             'quantity' => $request['quantity'],
             'price' => $request['price'],
-            'order_status' => 0
         ];
         if (array_key_exists('buyers_phone2', $request)) {
             $data['buyers_phone2'] = $request['buyers_phone2'];
