@@ -12,6 +12,19 @@ use Illuminate\Support\Facades\Validator;
 class GoodReceviedController extends Controller
 {
     use SendResponse, Pagination;
+
+    public function random_code()
+    {
+        $code = substr(str_shuffle("0123456789ABCD"), 0, 6);
+        $get = GoodReceived::where('code', $code)->first();
+        if ($get) {
+            return $this->random_code();
+        } else {
+            return $code;
+        }
+    }
+
+
     public function getGoodsInStore()
     {
         $good_receiveds = GoodReceived::with('customer', 'delevery_price');
@@ -79,7 +92,8 @@ class GoodReceviedController extends Controller
             'content' => $request['content'],
             'quantity' => $request['quantity'],
             'price' => $request['price'],
-            'order_status' => 0
+            'order_status' => 0,
+            'code' => $this->random_code(),
         ];
         if (array_key_exists('buyers_phone2', $request)) {
             $data['buyers_phone2'] = $request['buyers_phone2'];

@@ -82,7 +82,7 @@ class CustomersController extends Controller
             $data['phone_number2'] = $request['phone_number2'];
         }
         $new = Customer::Create($data);
-        return $this->send_response(200, 'تم اضافة موضف جديد', [], $new);
+        return $this->send_response(200, 'تم اضافة موضف جديد', [], Customer::find($new->id));
     }
     public function editCustomer(Request $request)
     {
