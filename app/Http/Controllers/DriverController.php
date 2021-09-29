@@ -48,7 +48,7 @@ class DriverController extends Controller
         $validator = Validator::make($request, [
             'name'     => 'required',
             'phone_number'  => 'required|unique:drivers,phone_number|min:11|max:11',
-            'phone_number2'      => 'unique:drivers,phone_number|min:11|max:11',
+            'phone_number2'      => 'nullable|unique:drivers,phone_number|min:11|max:11',
             'address'       => 'required',
         ], [
             'name.required' => 'يجب ادخال أسم العميل  ',

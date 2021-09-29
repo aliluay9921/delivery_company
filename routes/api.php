@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CustomersController;
 use App\Http\Controllers\DeliveryPriceController;
 use App\Http\Controllers\DriverController;
+use App\Http\Controllers\goodDriverController;
 use App\Http\Controllers\GoodReceviedController;
 use App\Http\Controllers\UserController;
 use App\Models\Customer;
@@ -29,6 +30,10 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('get_delivery_price', [DeliveryPriceController::class, 'getDeliveryPrice']);
     Route::get('get_goods_in_store', [GoodReceviedController::class, 'getGoodsInStore']);
 
+
+
+
+    Route::post('add_goods_to_driver', [GoodDriverController::class, 'addGoodToDriver']);
 
 
 

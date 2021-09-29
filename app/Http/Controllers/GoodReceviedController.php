@@ -149,15 +149,20 @@ class GoodReceviedController extends Controller
         $request = $request->json()->all();
         $validator = Validator::make($request, [
             'goods_id' => 'required|exists:good_receiveds,id',
-            'customer_id' => 'required|exists:customers,id',
-
+            'order_status' => 'required'
         ], [
             'goods_id.required' => 'يجب ادخال بضاعة',
             'goods_id.exists' => 'يجب ادخال بضاعة متوفرة',
+            'order_status' => 'حاله البضاعة مطلوبة'
 
         ]);
         if ($validator->fails()) {
             return $this->send_response(401, 'خطأ بالمدخلات', $validator->errors(), []);
         }
+        $goods = GoodReceived::find($request['goods_id']);
+        $goods->update([
+            'order_status' => $request['order_status']
+        ]);
+        return $this->send_response(200, 'تم تعديل معلومات البضاعة', [], GoodReceived::with('customer', 'delevery_price')->find($request['goods_id']));
     }
 }
