@@ -179,6 +179,6 @@ class GoodReceviedController extends Controller
                 'order_status' => $request['order_status']
             ]);
         }
-        return $this->send_response(200, 'تم تعديل معلومات البضاعة', [], GoodReceived::with('customer', 'delevery_price')->find($request['goods_id']));
+        return $this->send_response(200, 'تم تعديل معلومات البضاعة', [], GoodReceived::with('customer', 'delevery_price')->whereIn('id', $request['goods_id']->get()));
     }
 }
