@@ -97,10 +97,8 @@ class CustomersController extends Controller
         ], [
             'name.required' => 'يجب ادخال أسم العميل  ',
             'phone_number.required' => 'يرجى ادخال رقم هاتف للعميل ',
-            'phone_number.unique' => 'رقم الهاتف مستخدم سابقاً',
             'phone_number.min' => 'يرجى ادخال رقم هاتف صالح ',
             'phone_number.max' => 'يرجى ادخال رقم هاتف صالح',
-            'phone_number2.unique' => 'رقم الهاتف مستخدم سابقاً',
             'phone_number2.min' => 'يرجى ادخال رقم هاتف صالح ',
             'phone_number2.max' => 'يرجى ادخال رقم هاتف صالح',
             'address.required' => 'عنوان العميل مطلوب',

@@ -56,16 +56,20 @@ class GoodDriverController extends Controller
             return $this->send_response(401, 'خطأ بالمدخلات', $validator->errors(), []);
         }
         $price = 0;
-        $goods = GoodReceived::find($request['goods_received_id']);
-        $price = $goods->delevery_price->company_cost + $goods->delevery_price->driver_cost + $goods->price;
-        $goods->update([
-            'order_status' => 1
-        ]);
-        $check = GoodsDriver::create([
-            'driver_id' => $request['driver_id'],
-            'goods_received_id' => $request['goods_received_id'],
-            'final_price'   => $price
-        ]);
+        foreach ($request['goods_received_id'] as $good) {
+            $goods = GoodReceived::find($good);
+            $price = $goods->delevery_price->company_cost + $goods->delevery_price->driver_cost + $goods->price;
+            $goods->update([
+                'order_status' => 1
+            ]);
+            $check = GoodsDriver::create([
+                'driver_id' => $request['driver_id'],
+                'goods_received_id' => $good,
+                'final_price'   => $price
+            ]);
+        }
+        //return $price;
+
         return $this->send_response(200, 'تم انشاء وصل', [], GoodsDriver::with('driver', 'good', 'good.customer', 'good.delevery_price')->find($check->id));
     }
 }

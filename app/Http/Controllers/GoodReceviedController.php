@@ -173,10 +173,12 @@ class GoodReceviedController extends Controller
         if ($validator->fails()) {
             return $this->send_response(401, 'خطأ بالمدخلات', $validator->errors(), []);
         }
-        $goods = GoodReceived::find($request['goods_id']);
-        $goods->update([
-            'order_status' => $request['order_status']
-        ]);
+        foreach ($request['goods_id'] as $good) {
+            $product = GoodReceived::find($good);
+            $product->update([
+                'order_status' => $request['order_status']
+            ]);
+        }
         return $this->send_response(200, 'تم تعديل معلومات البضاعة', [], GoodReceived::with('customer', 'delevery_price')->find($request['goods_id']));
     }
 }
