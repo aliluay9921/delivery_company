@@ -12,4 +12,12 @@ class Driver extends Model
     use HasFactory, Uuids, SoftDeletes;
     protected $guarded = [];
     protected $dates = ['deleted_at'];
+    public function getBalanceAttribute()
+    // {
+    //     $price = 0;
+    //     foreach ($this->goodsRecevied as $good) {
+    //         $price += $good->price;
+    //     }
+    //     return  $price;
+    // }
 }

@@ -17,10 +17,10 @@ class CustomersController extends Controller
     public function getCustomers()
     {
         if (isset($_GET['customer_id'])) {
-            $customer = Customer::with('goodsRecevied')->find($_GET['customer_id']);
+            $customer = Customer::find($_GET['customer_id']);
             return $this->send_response(200, 'تم جلب العميل بنجاح', [], $customer);
         }
-        $customers = Customer::with('goodsRecevied')->withCount('goodsRecevied');
+        $customers = Customer::withCount('goods_recevied');
         if (isset($_GET['query'])) {
             $columns = Schema::getColumnListing('customers');
             foreach ($columns as $column) {
@@ -150,5 +150,35 @@ class CustomersController extends Controller
             'active' => !$customer->active
         ]);
         return $this->send_response(200, 'تم تغيرر حالة العميل', [], $customer);
+    }
+    public function customersAccount()
+    {
+        if (isset($_GET['customer_id'])) {
+            $customer = Customer::with('goods_recevied')->find($_GET['customer_id']);
+            return $this->send_response(401, 'خطأ بالمدخلات', [], $customer);
+        }
+        $customers = Customer::with('goods_recevied');
+        if (isset($_GET['query'])) {
+            $columns = Schema::getColumnListing('customers');
+            foreach ($columns as $column) {
+                $customers->orWhere($column, 'LIKE', '%' . $_GET['query'] . '%');
+            }
+        }
+        if (isset($_GET)) {
+            foreach ($_GET as $key => $value) {
+                if ($key == 'skip' || $key == 'limit' || $key == 'query') {
+                    continue;
+                } else {
+                    $sort = $value == 'true' ? 'desc' : 'asc';
+                    $customers->orderBy($key,  $sort);
+                }
+            }
+        }
+        if (!isset($_GET['skip']))
+            $_GET['skip'] = 0;
+        if (!isset($_GET['limit']))
+            $_GET['limit'] = 10;
+        $res = $this->paging($customers,  $_GET['skip'],  $_GET['limit']);
+        return $this->send_response(200, 'تم جلب العملاء بنجاح', [], $res["model"], null, $res["count"]);
     }
 }

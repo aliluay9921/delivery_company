@@ -26,6 +26,8 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', [AuthController::class, 'login']);
 Route::middleware(['auth:api'])->group(function () {
     Route::get('get_customers', [CustomersController::class, 'getCustomers']);
+    Route::get('customers_account', [CustomersController::class, 'customersAccount']);
+    Route::get('drivers_account', [DriverController::class, 'driversAccount']);
     Route::get('get_drivers', [DriverController::class, 'getDrivers']);
     Route::get('get_delivery_price', [DeliveryPriceController::class, 'getDeliveryPrice']);
     Route::get('get_goods_in_store', [GoodReceviedController::class, 'getGoodsInStore']);
