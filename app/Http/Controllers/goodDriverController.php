@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Validator;
 class GoodDriverController extends Controller
 {
     use SendResponse, Pagination;
-    public function getCheck()
+    public function getChecks()
     {
         $checks = GoodsDriver::with('driver', 'good', 'good.customer', 'good.delevery_price');
         if (isset($_GET['query'])) {
@@ -58,7 +58,9 @@ class GoodDriverController extends Controller
         $price = 0;
         $goods = GoodReceived::find($request['goods_received_id']);
         $price = $goods->delevery_price->company_cost + $goods->delevery_price->driver_cost + $goods->price;
-
+        $goods->update([
+            'order_status' => 1
+        ]);
         $check = GoodsDriver::create([
             'driver_id' => $request['driver_id'],
             'goods_received_id' => $request['goods_received_id'],

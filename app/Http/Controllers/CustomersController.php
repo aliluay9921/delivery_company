@@ -91,8 +91,8 @@ class CustomersController extends Controller
         $validator = Validator::make($request, [
             'customer_id' => 'required|exists:customers,id',
             'name'     => 'required',
-            'phone_number'  => 'required|min:11|max:11|unique:customers,phone_number,' . $customer->id,
-            'phone_number2'      => 'nullable|min:11|max:11|unique:customers,phone_number,' . $customer->id,
+            'phone_number'  => 'required|min:11|max:11',
+            'phone_number2'      => 'nullable|min:11|max:11',
             'address'       => 'required',
         ], [
             'name.required' => 'يجب ادخال أسم العميل  ',
