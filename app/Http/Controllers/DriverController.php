@@ -162,10 +162,10 @@ class DriverController extends Controller
     public function driversAccount()
     {
         if (isset($_GET['customer_id'])) {
-            $driver = Driver::with('goodsRecevied')->find($_GET['driver_id']);
+            $driver = Driver::find($_GET['driver_id']);
             return $this->send_response(401, 'خطأ بالمدخلات', [], $driver);
         }
-        $drivers = Driver::with('goodsRecevied');
+        $drivers = Driver::with('checks');
         if (isset($_GET['query'])) {
             $columns = Schema::getColumnListing('drivers');
             foreach ($columns as $column) {

@@ -10,6 +10,7 @@ class GoodsDriver extends Model
 {
     use HasFactory, Uuids;
     protected $guarded = [];
+    protected $with = ['good'];
 
 
     public function driver()
