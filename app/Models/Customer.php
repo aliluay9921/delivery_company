@@ -23,12 +23,12 @@ class Customer extends Model
     {
         $price = 0;
         // $goods = $this->goods_recevied()->where('order_status', 1)->get();
-        $goods = GoodReceived::where('customer_id', $this->id)->where('order_status', 2)->where('paid_customer', "=", false);
-        $outcoms = Outcome::where('type', 1)->where('target_id', $this->id)->where('paid_customer', "=", false);
+        $goods = GoodReceived::where('customer_id', $this->id)->where('order_status', 2)->where('paid_customer', false);
+        $outcoms = Outcome::where('type', 1)->where('target_id', $this->id)->where('paid_customer', false);
         foreach ($outcoms->get() as $outcom) {
             $price -= $outcom->value;
         }
-        foreach ($goods as $good) {
+        foreach ($goods->get() as $good) {
             $price += $good->price;
             if ($good->type_deliver == 0) {
                 $price -= $good->delevery_price->company_cost + $good->delevery_price->driver_cost;

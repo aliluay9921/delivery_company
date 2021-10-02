@@ -165,4 +165,8 @@ class UserController extends Controller
         ]);
         return $this->send_response(200, 'تم تغيرر حالة الموضف', [], $user);
     }
+    public function companyBalance()
+    {
+        $data = [];
+    }
 }
