@@ -31,7 +31,7 @@ class Driver extends Model
         // GoodsDriver::where('driver_id', $this->id)->where('paid_driver', "=", false);
 
         foreach ($checks->get() as $check) {
-            $price += $check->good->delevery_price->driver_cost;
+            $price += $check->delevery_price->driver_cost;
         }
         $outcoms = Outcome::where('target_id', $this->id)->where('paid_driver', "=", false);
         foreach ($outcoms->get() as $outcom) {
