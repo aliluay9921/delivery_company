@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\GoodReceived;
 use App\Traits\Pagination;
 use App\Traits\SendResponse;
 use Illuminate\Http\Request;
@@ -153,15 +154,13 @@ class CustomersController extends Controller
     }
     public function customersAccount()
     {
-        if (isset($_GET['customer_id'])) {
-            $customer = Customer::with('goods_recevied')->find($_GET['customer_id']);
-            return $this->send_response(401, 'خطأ بالمدخلات', [], $customer);
-        }
-        $customers = Customer::with('goods_recevied');
+
+        $customer = GoodReceived::with('delevery_price')->where('customer_id', $_GET['customer_id']);
+
         if (isset($_GET['query'])) {
-            $columns = Schema::getColumnListing('customers');
+            $columns = Schema::getColumnListing('good_receiveds');
             foreach ($columns as $column) {
-                $customers->orWhere($column, 'LIKE', '%' . $_GET['query'] . '%');
+                $customer->Where($column, 'LIKE', '%' . $_GET['query'] . '%');
             }
         }
         if (isset($_GET)) {
@@ -170,7 +169,7 @@ class CustomersController extends Controller
                     continue;
                 } else {
                     $sort = $value == 'true' ? 'desc' : 'asc';
-                    $customers->orderBy($key,  $sort);
+                    $customer->orderBy($key,  $sort);
                 }
             }
         }
@@ -178,7 +177,7 @@ class CustomersController extends Controller
             $_GET['skip'] = 0;
         if (!isset($_GET['limit']))
             $_GET['limit'] = 10;
-        $res = $this->paging($customers,  $_GET['skip'],  $_GET['limit']);
+        $res = $this->paging($customer,  $_GET['skip'],  $_GET['limit']);
         return $this->send_response(200, 'تم جلب العملاء بنجاح', [], $res["model"], null, $res["count"]);
     }
 }
