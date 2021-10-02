@@ -23,7 +23,7 @@ class Customer extends Model
     {
         $price = 0;
         // $goods = $this->goods_recevied()->where('order_status', 1)->get();
-        $goods = GoodReceived::where('customer_id', $this->id)->where('order_status', 1)->get();
+        $goods = GoodReceived::where('customer_id', $this->id)->where('order_status', 1)->where('paid_driver', "=", false);
         foreach ($goods as $good) {
             $price += $good->price;
             if ($good->type_deliver == 0) {

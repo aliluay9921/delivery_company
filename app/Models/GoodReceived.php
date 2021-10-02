@@ -21,4 +21,8 @@ class GoodReceived extends Model
     {
         return $this->belongsTo(DeliveryPrice::class, 'delivery_price_id');
     }
+    public function goods_driver()
+    {
+        return $this->hasOne(GoodsDriver::class, 'driver_id');
+    }
 }
