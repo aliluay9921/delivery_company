@@ -23,6 +23,6 @@ class GoodReceived extends Model
     }
     public function goods_driver()
     {
-        return $this->hasOne(GoodsDriver::class, 'driver_id');
+        return $this->hasOne(GoodsDriver::class, 'goods_received_id');
     }
 }

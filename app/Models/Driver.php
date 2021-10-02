@@ -22,12 +22,14 @@ class Driver extends Model
     public function getBalanceAttribute()
     {
         $price = 0;
+
         $checks
             = GoodReceived::whereHas('goods_driver',  function ($q) {
                 $q->where('driver_id', $this->id);
-            })->where('order_status', 1);
+            })->where('order_status', 2);
 
         // GoodsDriver::where('driver_id', $this->id)->where('paid_driver', "=", false);
+
         foreach ($checks->get() as $check) {
             $price += $check->good->delevery_price->driver_cost;
         }
