@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
+use App\Models\Driver;
+use App\Models\Outcome;
 use App\Models\Permission;
 use App\Models\User;
 use App\Traits\Pagination;
@@ -168,5 +171,19 @@ class UserController extends Controller
     public function companyBalance()
     {
         $data = [];
+        $data['customers_balance'] = 0;
+        $data['drivers_balance'] = 0;
+        $data['outcomes_customers'] = 0;
+        $data['outcomes_drivers'] = 0;
+        $customers = Customer::all()->sum('balance');
+        $drivers = Driver::all()->sum('balance');
+        $outcomes_customers = Outcome::where('type', 1)->get()->sum('value');
+        $outcomes_drivers = Outcome::where('type', 0)->get()->sum('value');
+        $data['customers_balance'] += $customers;
+        $data['drivers_balance'] += $drivers;
+        $data['outcomes_customers'] += $outcomes_customers;
+        $data['outcomes_drivers'] += $outcomes_drivers;
+
+        return $data;
     }
 }
