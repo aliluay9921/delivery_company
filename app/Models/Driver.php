@@ -22,9 +22,19 @@ class Driver extends Model
     public function getBalanceAttribute()
     {
         $price = 0;
-        $checks = GoodsDriver::where('driver_id', $this->id)->get();
-        foreach ($checks as $check) {
+        $checks = GoodsDriver::where('driver_id', $this->id)->where('paid_driver', "=", false);
+        foreach ($checks->get() as $check) {
             $price += $check->good->delevery_price->driver_cost;
+        }
+        $outcoms = Outcome::where('target_id', $this->id)->where('paid_driver', "=", false);
+        foreach ($outcoms->get() as $outcom) {
+            $price -= $outcom->value;
+        }
+        if ($price == 0) {
+            //here
+            CONSOLE;
+            $checks->update(['paid_driver' => true]);
+            $outcoms->update(['paid_driver' => true]);
         }
         return  $price;
     }

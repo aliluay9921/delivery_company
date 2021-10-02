@@ -6,6 +6,7 @@ use App\Http\Controllers\DeliveryPriceController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\goodDriverController;
 use App\Http\Controllers\GoodReceviedController;
+use App\Http\Controllers\OutcomesController;
 use App\Http\Controllers\UserController;
 use App\Models\Customer;
 use App\Models\User;
@@ -37,6 +38,7 @@ Route::middleware(['auth:api'])->group(function () {
 
     Route::get('get_checks', [GoodDriverController::class, 'getChecks']);
     Route::post('add_check', [GoodDriverController::class, 'addCheck']);
+    Route::post('add_outcome', [OutcomesController::class, 'addOutcome']);
 
 
 
