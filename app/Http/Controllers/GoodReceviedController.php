@@ -27,11 +27,12 @@ class GoodReceviedController extends Controller
 
     public function getGoodsInStore()
     {
-        $good_receiveds = GoodReceived::with(['customer' => function ($q) {
-            if (isset($_GET['query']))
-                $q->orwhere('name', 'LIKE', '%' . $_GET['query'] . '%');
-        }, 'delevery_price']);
+        $good_receiveds = GoodReceived::with(['customer', 'delevery_price']);
+
         if (isset($_GET['query'])) {
+            $good_receiveds = $good_receiveds->whereHas('customer', function ($q) {
+                $q->where('name', 'LIKE', '%' . $_GET['query'] . '%');
+            });
             $columns = Schema::getColumnListing('good_receiveds');
             foreach ($columns as $column) {
                 $good_receiveds->orWhere($column, 'LIKE', '%' . $_GET['query'] . '%');
