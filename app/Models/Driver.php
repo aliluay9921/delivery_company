@@ -26,20 +26,18 @@ class Driver extends Model
         $checks
             = GoodReceived::whereHas('goods_driver',  function ($q) {
                 $q->where('driver_id', $this->id);
-            })->where('order_status', 2);
+            })->where('order_status', 2)->where('paid_driver', "=", false);
 
         // GoodsDriver::where('driver_id', $this->id)->where('paid_driver', "=", false);
 
         foreach ($checks->get() as $check) {
             $price += $check->delevery_price->driver_cost;
         }
-        $outcoms = Outcome::where('target_id', $this->id)->where('paid_driver', "=", false);
+        $outcoms = Outcome::where('type', 0)->where('target_id', $this->id)->where('paid_driver', "=", false);
         foreach ($outcoms->get() as $outcom) {
             $price -= $outcom->value;
         }
         if ($price == 0) {
-            //here
-
             $checks->update(['paid_driver' => true]);
             $outcoms->update(['paid_driver' => true]);
         }

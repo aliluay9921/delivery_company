@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Validator;
 
 class GoodDriverController extends Controller
 {
+
+
     use SendResponse, Pagination;
     public function getChecks()
     {

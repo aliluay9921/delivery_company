@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use App\Models\GoodReceived;
+use App\Models\GoodsDriver;
 use App\Traits\Pagination;
 use App\Traits\SendResponse;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class CustomersController extends Controller
     public function getCustomers()
     {
         if (isset($_GET['customer_id'])) {
-            $customer = Customer::find($_GET['customer_id']);
+            $customer = GoodReceived::where($_GET['customer_id']);
             return $this->send_response(200, 'تم جلب العميل بنجاح', [], $customer);
         }
         $customers = Customer::withCount('goods_recevied');
