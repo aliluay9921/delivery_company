@@ -88,7 +88,7 @@ class DriverController extends Controller
         $driver = Driver::find($request['driver_id']);
         $validator = Validator::make($request, [
             'driver_id' => 'required|exists:drivers,id',
-            'name'     => 'required|unique:drivers,name' . $driver->id,
+            'name'     => 'required|unique:drivers,name,' . $driver->id,
             'phone_number'  => 'required|min:11|max:11',
             'phone_number2'      => 'min:11|max:11',
             'address'       => 'required',
