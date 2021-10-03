@@ -109,7 +109,7 @@ class GoodReceviedController extends Controller
         $new = GoodReceived::create($data);
 
         Log::create([
-            'target_id' => $request['target_id'],
+            'target_id' => $request['customer_id'],
             'value' => $request['price'],
             'type' => 1,
             'log_type' => 'تم اضافة بضاعة جديدة',
