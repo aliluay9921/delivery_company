@@ -47,17 +47,16 @@ class DriverController extends Controller
     {
         $request = $request->json()->all();
         $validator = Validator::make($request, [
-            'name'     => 'required',
-            'phone_number'  => 'required|unique:drivers,phone_number|min:11|max:11',
-            'phone_number2'      => 'nullable|unique:drivers,phone_number|min:11|max:11',
+            'name'     => 'required|unique:drivers,name',
+            'phone_number'  => 'required|min:11|max:11',
+            'phone_number2'      => 'nullable|min:11|max:11',
             'address'       => 'required',
         ], [
             'name.required' => 'يجب ادخال أسم العميل  ',
             'phone_number.required' => 'يرجى ادخال رقم هاتف للموضف ',
-            'phone_number.unique' => 'رقم الهاتف مستخدم سابقاً',
+            'name.unique' => 'الاسم مستخدم سابقاً',
             'phone_number.min' => 'يرجى ادخال رقم هاتف صالح ',
             'phone_number.max' => 'يرجى ادخال رقم هاتف صالح',
-            'phone_number2.unique' => 'رقم الهاتف مستخدم سابقاً',
             'phone_number2.min' => 'يرجى ادخال رقم هاتف صالح ',
             'phone_number2.max' => 'يرجى ادخال رقم هاتف صالح',
             'address.required' => 'عنوان العميل مطلوب',
@@ -89,19 +88,18 @@ class DriverController extends Controller
         $driver = Driver::find($request['driver_id']);
         $validator = Validator::make($request, [
             'driver_id' => 'required|exists:drivers,id',
-            'name'     => 'required',
-            'phone_number'  => 'required|min:11|max:11|unique:drivers,phone_number,' . $driver->id,
-            'phone_number2'      => 'min:11|max:11|unique:drivers,phone_number,' . $driver->id,
+            'name'     => 'required|unique:drivers,name' . $driver->id,
+            'phone_number'  => 'required|min:11|max:11',
+            'phone_number2'      => 'min:11|max:11',
             'address'       => 'required',
         ], [
             'driver_id.required' => 'يجب ادخال مندوب',
             'driver_id.exists' => 'يجب ادخال مندوب صحيح',
             'name.required' => 'يجب ادخال أسم المندوب  ',
+            'name.unique' => 'هذا الاسم مستخدم سابقاً ',
             'phone_number.required' => 'يرجى ادخال رقم هاتف للمندوب ',
-            'phone_number.unique' => 'رقم الهاتف مستخدم سابقاً',
             'phone_number.min' => 'يرجى ادخال رقم هاتف صالح ',
             'phone_number.max' => 'يرجى ادخال رقم هاتف صالح',
-            'phone_number2.unique' => 'رقم الهاتف مستخدم سابقاً',
             'phone_number2.min' => 'يرجى ادخال رقم هاتف صالح ',
             'phone_number2.max' => 'يرجى ادخال رقم هاتف صالح',
             'address.required' => 'عنوان المندوب مطلوب',
