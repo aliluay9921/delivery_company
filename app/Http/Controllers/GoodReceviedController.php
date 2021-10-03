@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Log;
 use App\Traits\Pagination;
 use App\Models\GoodReceived;
 use App\Traits\SendResponse;
@@ -106,6 +107,14 @@ class GoodReceviedController extends Controller
             $data['note'] = $request['note'];
         }
         $new = GoodReceived::create($data);
+
+        Log::create([
+            'target_id' => $request['driver_id'],
+            'value' => $request['price'],
+            'type' => 1,
+            'log_type' => 'تم اضافة بضاعة جديدة',
+            'user_id'   => auth()->user()->id,
+        ]);
         return $this->send_response(200, 'تم اضافة البضاعة جديدة', [], GoodReceived::with('customer', 'delevery_price')->find($new->id));
     }
     public function editGoodsInStore(Request $request)

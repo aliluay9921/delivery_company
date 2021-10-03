@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Traits\Pagination;
 use App\Models\GoodsDriver;
 use App\Models\GoodReceived;
+use App\Models\Log;
 use App\Traits\SendResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
@@ -68,6 +69,14 @@ class GoodDriverController extends Controller
                 'driver_id' => $request['driver_id'],
                 'goods_received_id' => $good,
                 'final_price'   => $price
+            ]);
+            Log::create([
+                'target_id' => $request['driver_id'],
+                'value' => $price,
+                'log_type' => 'تم اصدار وصل جديد',
+                'type' => 0,
+                'user_id'   => auth()->user()->id,
+                'note' => $goods->note,
             ]);
         }
         //return $price;

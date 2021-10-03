@@ -35,6 +35,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('get_outcomes', [OutcomesController::class, 'getOutcomes']);
 
     Route::get('company_balance', [UserController::class, 'companyBalance']);
+    Route::get('get_logs', [UserController::class, 'getLogs']);
 
 
 

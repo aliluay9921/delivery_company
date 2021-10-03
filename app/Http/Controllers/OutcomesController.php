@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Log;
 use App\Models\Driver;
 use App\Models\Outcome;
 use App\Traits\Pagination;
@@ -55,6 +56,22 @@ class OutcomesController extends Controller
             return $this->send_response(401, 'خطأ بالمدخلات', $validator->errors(), []);
         }
         $outcome = Outcome::create($request);
+        $log = [];
+        $log = [
+            'target_id' => $request['target_id'],
+            'value' => $request['value'],
+            'log_type' =>  $request['name'],
+            'user_id'   => auth()->user()->id,
+        ];
+        if ($request['type'] == 0) {
+            $log['type'] == 0;
+        } elseif ($request['type'] == 1) {
+            $log['type'] == 1;
+        } elseif ($request['type'] == 2) {
+            $log['type'] == 2;
+        }
+        Log::create($log);
+
         return $this->send_response(200, 'تم اضافة صرف', [], Outcome::find($outcome->id));
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use App\Models\Driver;
+use App\Models\Log;
 use App\Models\Outcome;
 use App\Models\Permission;
 use App\Models\User;
@@ -168,6 +169,34 @@ class UserController extends Controller
         ]);
         return $this->send_response(200, 'تم تغيرر حالة الموضف', [], $user);
     }
+
+    public function getLogs()
+    {
+        $logs = Log::with('customer', 'driver');
+        if (isset($_GET['query'])) {
+            $columns = Schema::getColumnListing('logs');
+            foreach ($columns as $column) {
+                $logs->orWhere($column, 'LIKE', '%' . $_GET['query'] . '%');
+            }
+        }
+        if (isset($_GET)) {
+            foreach ($_GET as $key => $value) {
+                if ($key == 'skip' || $key == 'limit' || $key == 'query') {
+                    continue;
+                } else {
+                    $sort = $value == 'true' ? 'desc' : 'asc';
+                    $logs->orderBy($key,  $sort);
+                }
+            }
+        }
+        if (!isset($_GET['skip']))
+            $_GET['skip'] = 0;
+        if (!isset($_GET['limit']))
+            $_GET['limit'] = 10;
+        $res = $this->paging($logs,  $_GET['skip'],  $_GET['limit']);
+        return $this->send_response(200, 'تم جلب البضائع بنجاح', [], $res["model"], null, $res["count"]);
+    }
+
     public function companyBalance()
     {
         $data = [];
