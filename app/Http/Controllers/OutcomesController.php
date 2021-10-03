@@ -64,11 +64,11 @@ class OutcomesController extends Controller
             'user_id'   => auth()->user()->id,
         ];
         if ($request['type'] == 0) {
-            $log['type'] == 0;
+            $log['type'] = 0;
         } elseif ($request['type'] == 1) {
-            $log['type'] == 1;
+            $log['type'] = 1;
         } elseif ($request['type'] == 2) {
-            $log['type'] == 2;
+            $log['type'] = 2;
         }
         Log::create($log);
 
