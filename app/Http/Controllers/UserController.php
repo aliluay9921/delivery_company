@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Customer;
-use App\Models\Driver;
-use App\Models\GoodReceived;
+use Carbon\Carbon;
 use App\Models\Log;
-use App\Models\Outcome;
-use App\Models\Permission;
 use App\Models\User;
+use App\Models\Driver;
+use App\Models\Outcome;
+use App\Models\Customer;
+use App\Models\Permission;
 use App\Traits\Pagination;
+use App\Models\GoodsDriver;
+use App\Models\GoodReceived;
 use App\Traits\SendResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
@@ -201,18 +203,29 @@ class UserController extends Controller
     public function companyBalance()
     {
         $data = [];
-        $customers = Customer::all()->sum('balance');
-        $drivers = Driver::all()->sum('balance');
+        $data['صافي ربح الشركة'] = 0;
+        $data['ارباح اليوم'] = 0;
+
         $employees = User::all()->sum('salary');
-        $outcomes_customers = Outcome::where('type', 1)->get()->sum('value');
-        $outcomes_drivers = Outcome::where('type', 0)->get()->sum('value');
-        $data['customers_balance'] = $customers;
-        $data['drivers_balance'] = $drivers;
-        $data['outcomes_customers'] = $outcomes_customers;
-        $data['outcomes_drivers'] = $outcomes_drivers;
-        $data['employees_salary'] = $employees;
-
-
+        if (isset($_GET['to']) && isset($_GET['from'])) {
+            $customers = Customer::whereBetween('created_at', [$_GET['to'], $_GET['from']])->get()->sum('balance');
+            $drivers = Driver::whereBetween('created_at', [$_GET['to'], $_GET['from']])->get()->sum('balance');
+            $company_balance = GoodReceived::where('order_status', 2)->whereBetween('created_at', [$_GET['to'], $_GET['from']])->get();
+        } else {
+            $customers = Customer::all()->sum('balance');
+            $drivers = Driver::all()->sum('balance');
+            $company_balance = GoodReceived::where('order_status', 2)->get();
+        }
+        foreach ($company_balance as $balance) {
+            $data['صافي ربح الشركة'] += $balance->delevery_price->company_cost;
+            if ($balance->created_at->toDateString() === Carbon::today()->toDateString()) {
+                $data['ارباح اليوم'] += $balance->delevery_price->company_cost;
+            }
+        }
+        // return $data;
+        $data['صافي رصد العملاء'] = $customers;
+        $data['صافي رصيد المندوبين'] = $drivers;
+        $data['رواتب الموضفين'] = $employees;
         return $this->send_response(200, 'احصائيات الشركة', [], [$data]);
     }
     public function statistics()
