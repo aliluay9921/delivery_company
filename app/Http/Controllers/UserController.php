@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use App\Models\Driver;
+use App\Models\GoodReceived;
 use App\Models\Log;
 use App\Models\Outcome;
 use App\Models\Permission;
@@ -200,19 +201,37 @@ class UserController extends Controller
     public function companyBalance()
     {
         $data = [];
-        $data['customers_balance'] = 0;
-        $data['drivers_balance'] = 0;
-        $data['outcomes_customers'] = 0;
-        $data['outcomes_drivers'] = 0;
         $customers = Customer::all()->sum('balance');
         $drivers = Driver::all()->sum('balance');
+        $employees = User::all()->sum('salary');
         $outcomes_customers = Outcome::where('type', 1)->get()->sum('value');
         $outcomes_drivers = Outcome::where('type', 0)->get()->sum('value');
-        $data['customers_balance'] += $customers;
-        $data['drivers_balance'] += $drivers;
-        $data['outcomes_customers'] += $outcomes_customers;
-        $data['outcomes_drivers'] += $outcomes_drivers;
+        $data['customers_balance'] = $customers;
+        $data['drivers_balance'] = $drivers;
+        $data['outcomes_customers'] = $outcomes_customers;
+        $data['outcomes_drivers'] = $outcomes_drivers;
+        $data['employees_salary'] = $employees;
 
-        return $data;
+
+        return $this->send_response(200, 'احصائيات الشركة', [], [$data]);
+    }
+    public function statistics()
+    {
+        if (isset($_GET['good_receiveds'])) {
+            $statistics = [];
+            $order_status_zero = GoodReceived::where('order_status', 0)->count();
+            $order_status_first = GoodReceived::where('order_status', 1)->count();
+            $order_status_second = GoodReceived::where('order_status', 2)->count();
+            $order_status_third = GoodReceived::where('order_status', 3)->count();
+            $order_status_fourth = GoodReceived::where('order_status', 4)->count();
+            $statistics = [
+                'order_status_zero' => $order_status_zero,
+                'order_status_first' => $order_status_first,
+                'order_status_second' => $order_status_second,
+                'order_status_third' => $order_status_third,
+                'order_status_fourth' => $order_status_fourth,
+            ];
+            return $this->send_response(200, 'احصائيات', [], [$statistics]);
+        }
     }
 }
