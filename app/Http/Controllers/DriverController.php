@@ -161,7 +161,7 @@ class DriverController extends Controller
     public function driversAccount()
     {
         if (isset($_GET['driver_id'])) {
-            $goods = GoodReceived::with('goods_driver','customer', 'delevery_price')->whereHas('goods_driver', function ($q) {
+            $goods = GoodReceived::with(['goods_driver','customer', 'delevery_price'])->whereHas('goods_driver', function ($q) {
                 $q->where('driver_id',  $_GET['driver_id']);
             });
             // return $goods;
