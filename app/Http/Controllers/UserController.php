@@ -220,7 +220,6 @@ class UserController extends Controller
         } else {
             $customers = Customer::all()->sum('balance');
             $drivers = Driver::all()->sum('balance');
-            // $company_balance = GoodReceived::where('paid_company', false)->where('order_status', 2)->get();
             $outcom = Outcome::first();
             $company_balance = $outcom->CompanyBalance;
             $data['صافي ربح الشركة'] = $company_balance;
@@ -231,15 +230,6 @@ class UserController extends Controller
                 }
             }
         }
-
-
-        // foreach ($company_balance as $balance) {
-        //     $data['صافي ربح الشركة'] += $balance->delevery_price->company_cost;
-        //     if ($balance->created_at->toDateString() === Carbon::today()->toDateString()) {
-        //         $data['ارباح اليوم'] += $balance->delevery_price->company_cost;
-        //     }
-        // }
-        // return $data;
         $data['صافي رصيد العملاء'] = $customers;
         $data['صافي رصيد المندوبين'] = $drivers;
         $data['رواتب الموضفين'] = $employees;
