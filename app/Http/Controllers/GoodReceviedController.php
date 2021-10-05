@@ -40,15 +40,15 @@ class GoodReceviedController extends Controller
                 $good_receiveds->orWhere($column, 'LIKE', '%' . $_GET['query'] . '%');
             }
         }
+
+        if (isset($_GET['filter'])) {
+            $filter = json_decode($_GET['filter']);
+            $good_receiveds->where($filter->name,  $filter->value);
+        }
+
         if (isset($_GET)) {
             foreach ($_GET as $key => $value) {
-                // if ($key == 'archive' || $key == 'order_status' || $key = 'type_deliver') {
-                // $columns = Schema::getColumnListing('good_receiveds');
-                // foreach ($columns as $column) {
-                //     if ($key === $column)
-                //         $good_receiveds->where($key, $value);
-                // }
-                if ($key == 'skip' || $key == 'limit' || $key == 'query') {
+                if ($key == 'skip' || $key == 'limit' || $key == 'query' || $key = 'filter') {
                     continue;
                 } else {
                     $sort = $value == 'true' ? 'desc' : 'asc';
