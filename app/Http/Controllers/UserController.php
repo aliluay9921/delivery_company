@@ -12,6 +12,7 @@ use App\Models\Permission;
 use App\Traits\Pagination;
 use App\Models\GoodsDriver;
 use App\Models\GoodReceived;
+use App\Models\Income;
 use App\Traits\SendResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
@@ -235,23 +236,62 @@ class UserController extends Controller
         $data['رواتب الموضفين'] = $employees;
         return $this->send_response(200, 'احصائيات الشركة', [], [$data]);
     }
+
     public function statistics()
     {
+
+        $statistics = [];
         if (isset($_GET['good_receiveds'])) {
-            $statistics = [];
-            $order_status_zero = GoodReceived::where('order_status', 0)->count();
-            $order_status_first = GoodReceived::where('order_status', 1)->count();
-            $order_status_second = GoodReceived::where('order_status', 2)->count();
-            $order_status_third = GoodReceived::where('order_status', 3)->count();
-            $order_status_fourth = GoodReceived::where('order_status', 4)->count();
             $statistics = [
-                'order_status_zero' => $order_status_zero,
-                'order_status_first' => $order_status_first,
-                'order_status_second' => $order_status_second,
-                'order_status_third' => $order_status_third,
-                'order_status_fourth' => $order_status_fourth,
+                'order_status_zero' => GoodReceived::where('order_status', 0)->count(),
+                'order_status_first' => GoodReceived::where('order_status', 1)->count(),
+                'order_status_second' => GoodReceived::where('order_status', 2)->count(),
+                'order_status_third' => GoodReceived::where('order_status', 3)->count(),
+                'order_status_fourth' => GoodReceived::where('order_status', 4)->count(),
+                'order_archive' => GoodReceived::where('archive', 1)->count(),
+                'order_not_archive' => GoodReceived::where('archive', 0)->count(),
+                'gift' =>  GoodReceived::where('type_deliver', 0)->count(),
+                'money' => GoodReceived::where('type_deliver', 1)->count(),
+                'goods' => GoodReceived::count(),
             ];
-            return $this->send_response(200, 'احصائيات', [], [$statistics]);
         }
+        if (isset($_GET['drivers'])) {
+            $statistics = [
+                'drivers' => Driver::count(),
+                'drivers_zero' => Driver::where('type_vehicle', 0)->count(),
+                'drivers_one' => Driver::where('type_vehicle', 1)->count(),
+                'drivers_two' => Driver::where('type_vehicle', 2)->count(),
+                'drivers_active' => Driver::where('active', 1)->count(),
+                'drivers_disActive' => Driver::where('active', 0)->count(),
+            ];
+        }
+        if (isset($_GET['customers'])) {
+            $statistics = [
+                'customers' => Customer::count(),
+                'customers_active' => Customer::where('active', 1)->count(),
+                'customers_disActive' => Customer::where('active', 0)->count(),
+            ];
+        }
+        if (isset($_GET['goods_drivers'])) {
+            $statistics = [
+                'goods_drivers' => GoodsDriver::count(),
+            ];
+        }
+        if (isset($_GET['incomes'])) {
+            $statistics = [
+                'incomes' => Income::count(),
+                'incomes_owner' => Income::where('type', 0)->count(),
+                'incomes_customer' => Income::where('type', 1)->count(),
+            ];
+        }
+        if (isset($_GET['outcomes'])) {
+            $statistics = [
+                'outcomes' => Income::count(),
+                'outcomes_owner' => Income::whereIn('type', [2, 3])->count(),
+                'outcomes_customer' => Income::where('type', 1)->count(),
+                'outcomes_driver' => Income::where('type', 0)->count(),
+            ];
+        }
+        return $this->send_response(200, 'احصائيات', [], [$statistics]);
     }
 }
