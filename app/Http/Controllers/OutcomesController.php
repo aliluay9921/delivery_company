@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Log;
 use App\Models\Driver;
 use App\Models\Outcome;
+use App\Models\Customer;
 use App\Traits\Pagination;
+use App\Models\GoodReceived;
 use App\Traits\SendResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
@@ -55,21 +57,55 @@ class OutcomesController extends Controller
         if ($validator->fails()) {
             return $this->send_response(401, 'خطأ بالمدخلات', $validator->errors(), []);
         }
-        $outcome = Outcome::create($request);
+        $outcome = [];
         $log = [];
+        $outcome = [
+            'name' => $request['name'],
+            'type' => $request['type'],
+        ];
+        if (array_key_exists('target_id', $request)) {
+            $outcome['target_id'] = $request['target_id'];
+            $log['target_id'] = $request['target_id'];
+        }
+        if ($request['type'] == 0) {
+            $log['type'] = 0;
+            $driver = Driver::find($request['target_id']);
+            if ($driver) {
+                if ($driver->balance > $request['value']) {
+                    $outcome['value'] = $request['value'];
+                } else {
+                    return $this->send_response(401, 'خطاً قم بأدخال قيمة اقل او تساوي ' . $driver->balance, [], []);
+                }
+            }
+        } elseif ($request['type'] == 1) {
+            $log['type'] = 1;
+
+            $customer = Customer::find($request['target_id']);
+            if ($customer) {
+                if ($customer->balance > $request['value']) {
+                    $outcome['value'] = $request['value'];
+                } else {
+                    return $this->send_response(401, 'خطاً قم بأدخال قيمة اقل او تساوي ' . $customer->balance, [], []);
+                }
+            }
+        } elseif ($request['type'] == 2 || $request['type'] == 3) {
+            $log['type'] = 2;
+            $company_balance = Outcome::first();
+            if ($company_balance->CompanyBalance > $request['value']) {
+                $outcome['value'] = $request['value'];
+            } else {
+                return $this->send_response(401, 'خطاً قم بأدخال قيمة اقل او تساوي ' . $company_balance->CompanyBalance, [], []);
+            }
+        }
+        // return $outcome;
+        $outcome = Outcome::create($outcome);
+
         $log = [
-            'target_id' => $request['target_id'],
             'value' => $request['value'],
             'log_type' =>  $request['name'],
             'user_id'   => auth()->user()->id,
         ];
-        if ($request['type'] == 0) {
-            $log['type'] = 0;
-        } elseif ($request['type'] == 1) {
-            $log['type'] = 1;
-        } elseif ($request['type'] == 2) {
-            $log['type'] = 2;
-        }
+
         Log::create($log);
 
         return $this->send_response(200, 'تم اضافة صرف', [], Outcome::find($outcome->id));

@@ -175,7 +175,7 @@ class UserController extends Controller
 
     public function getLogs()
     {
-        $logs = Log::with('customer', 'driver');
+        $logs = Log::with('customer', 'driver', 'user');
         if (isset($_GET['query'])) {
             $columns = Schema::getColumnListing('logs');
             foreach ($columns as $column) {
