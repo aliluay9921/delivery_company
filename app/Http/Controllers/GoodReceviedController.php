@@ -43,7 +43,7 @@ class GoodReceviedController extends Controller
 
         if (isset($_GET['filter'])) {
             $filter = json_decode($_GET['filter']);
-            $good_receiveds->where($filter->name,  $filter->value == 'true' ? 1 : 0);
+            $good_receiveds->where($filter->name,  $filter->value);
         }
 
         if (isset($_GET)) {
