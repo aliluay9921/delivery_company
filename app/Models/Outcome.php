@@ -28,7 +28,7 @@ class Outcome extends Model
         foreach ($goods as $good) {
             $company_balance += $good->delevery_price->company_cost;
         }
-        $outcoms = Outcome::where('type', 0)->where('target_id', null)->where('paid_company', false);
+        $outcoms = Outcome::whereIn('type', [2, 3])->where('target_id', null)->where('paid_company', false);
         foreach ($outcoms->get() as $outcom) {
             $company_balance -= $outcom->value;
         }
