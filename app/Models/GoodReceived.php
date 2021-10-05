@@ -11,7 +11,7 @@ class GoodReceived extends Model
 {
     use HasFactory, SoftDeletes, Uuids;
     protected $guarded = [];
-    protected $with = ['delevery_price', 'statistics'];
+    protected $with = ['delevery_price'];
 
     public function customer()
     {
