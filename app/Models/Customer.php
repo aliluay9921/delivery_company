@@ -25,6 +25,7 @@ class Customer extends Model
         // $goods = $this->goods_recevied()->where('order_status', 1)->get();
         $goods = GoodReceived::where('customer_id', $this->id)->where('order_status', 2)->where('paid_customer', false);
         $outcoms = Outcome::where('type', 1)->where('target_id', $this->id)->where('paid_customer', false);
+        $incomes = Income::where('type', 1)->where('paid_customer', false)->get();
         foreach ($outcoms->get() as $outcom) {
             $price -= $outcom->value;
         }
@@ -34,9 +35,13 @@ class Customer extends Model
                 $price -= $good->delevery_price->company_cost + $good->delevery_price->driver_cost;
             }
         }
+        foreach ($incomes as $income) {
+            $price += $income->value;
+        }
         if ($price == 0) {
             $goods->update(['paid_customer' => true]);
             $outcoms->update(['paid_customer' => true]);
+            $incomes->update(['paid_customer' => true]);
         }
         return  $price;
     }

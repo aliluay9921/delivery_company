@@ -40,6 +40,7 @@ class Outcome extends Model
         if ($company_balance == 0) {
             $goods->update(['paid_company' => true]);
             $outcoms->update(['paid_company' => true]);
+            $incomes->update(['paid_company' => true]);
         }
         return $company_balance;
     }
