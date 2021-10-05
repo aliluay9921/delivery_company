@@ -40,12 +40,14 @@ Route::middleware(['auth:api'])->group(function () {
 
 
 
+
     Route::get('get_checks', [GoodDriverController::class, 'getChecks']);
     Route::post('add_check', [GoodDriverController::class, 'addCheck']);
     Route::post('add_outcome', [OutcomesController::class, 'addOutcome']);
 
 
 
+    Route::post('goods_archive', [GoodReceviedController::class, 'goodsArchive']);
     Route::post('add_goods_to_store', [GoodReceviedController::class, 'addGoodsToStore']);
     Route::put('edit_goods_in_store', [GoodReceviedController::class, 'editGoodsInStore']);
     Route::put('change_status_goods', [GoodReceviedController::class, 'changeGoodsStatus']);

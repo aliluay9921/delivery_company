@@ -28,7 +28,7 @@ class GoodReceviedController extends Controller
 
     public function getGoodsInStore()
     {
-        $good_receiveds = GoodReceived::with(['customer', 'delevery_price']);
+        $good_receiveds = GoodReceived::with(['customer', 'delevery_price', 'goods_driver.driver']);
 
         if (isset($_GET['query'])) {
             $good_receiveds = $good_receiveds->whereHas('customer', function ($q) {
@@ -193,5 +193,11 @@ class GoodReceviedController extends Controller
             ]);
         }
         return $this->send_response(200, 'تم تعديل معلومات البضاعة', [], GoodReceived::with('customer', 'delevery_price')->whereIn('id', $request['goods_id'])->get());
+    }
+    public function goodsArchive(Request $request)
+    {
+        $request = $request->json()->all();
+        $goods = GoodReceived::whereIn('id', $request['goods_id'])->get();
+        // $goods
     }
 }
