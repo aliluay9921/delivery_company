@@ -42,9 +42,12 @@ class GoodReceviedController extends Controller
         }
         if (isset($_GET)) {
             foreach ($_GET as $key => $value) {
-                if ($key == 'archive' || $key == 'order_status' || $key = 'type_deliver') {
-                    $good_receiveds->where($key, $value);
-                }
+                // if ($key == 'archive' || $key == 'order_status' || $key = 'type_deliver') {
+                // $columns = Schema::getColumnListing('good_receiveds');
+                // foreach ($columns as $column) {
+                //     if ($key === $column)
+                //         $good_receiveds->where($key, $value);
+                // }
                 if ($key == 'skip' || $key == 'limit' || $key == 'query') {
                     continue;
                 } else {
