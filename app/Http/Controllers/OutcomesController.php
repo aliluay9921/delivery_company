@@ -97,7 +97,6 @@ class OutcomesController extends Controller
                 return $this->send_response(401, 'خطاً قم بأدخال قيمة اقل او تساوي ' . $company_balance->CompanyBalance, [], []);
             }
         }
-        // return $outcome;
         $outcome = Outcome::create($outcome);
 
         $log = [

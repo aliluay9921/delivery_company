@@ -210,11 +210,14 @@ class UserController extends Controller
         if (isset($_GET['from']) && isset($_GET['to'])) {
             $customers = Customer::whereBetween('created_at', [$_GET['from'], $_GET['to']])->get()->sum('balance');
             $drivers = Driver::whereBetween('created_at', [$_GET['from'], $_GET['to']])->get()->sum('balance');
-            $company_balance = GoodReceived::where('order_status', 2)->whereBetween('created_at', [$_GET['from'], $_GET['to']])->get();
+            $company_balance = GoodReceived::where('paid_company', false)->where('order_status', 2)->whereBetween('created_at', [$_GET['from'], $_GET['to']])->get();
+
+            // $outcom = Outcome::first();
+            // $company_balance = $outcom->CompanyBalance;
         } else {
             $customers = Customer::all()->sum('balance');
             $drivers = Driver::all()->sum('balance');
-            $company_balance = GoodReceived::where('order_status', 2)->get();
+            $company_balance = GoodReceived::where('paid_company', false)->where('order_status', 2)->get();
         }
         foreach ($company_balance as $balance) {
             $data['صافي ربح الشركة'] += $balance->delevery_price->company_cost;
