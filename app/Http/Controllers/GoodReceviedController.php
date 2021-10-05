@@ -29,7 +29,7 @@ class GoodReceviedController extends Controller
     public function getGoodsInStore()
     {
 
-        $good_receiveds = GoodReceived::with(['customer', 'delevery_price', 'goods_driver.driver'])->where('archive', 0);
+        $good_receiveds = GoodReceived::with(['customer', 'delevery_price', 'goods_driver.driver']);
 
         if (isset($_GET['query'])) {
             $good_receiveds = $good_receiveds->whereHas('customer', function ($q) {
@@ -43,7 +43,7 @@ class GoodReceviedController extends Controller
 
         if (isset($_GET['filter'])) {
             $filter = json_decode($_GET['filter']);
-            $good_receiveds->where($filter->name,  $filter->value);
+            $good_receiveds->where($filter->name,  $filter->value == 'true' ? 1 : 0);
         }
 
         if (isset($_GET)) {

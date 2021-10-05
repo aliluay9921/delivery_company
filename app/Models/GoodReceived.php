@@ -25,14 +25,4 @@ class GoodReceived extends Model
     {
         return $this->hasOne(GoodsDriver::class, 'goods_received_id');
     }
-
-    public function statistics()
-    {
-        $statistics = [];
-        $goods = GoodReceived::all();
-        $statistics = [
-            'البضائع المؤرشفة' => $goods->where('archive', 1)->count()
-        ];
-        return $statistics;
-    }
 }
