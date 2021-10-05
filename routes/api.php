@@ -47,7 +47,7 @@ Route::middleware(['auth:api'])->group(function () {
 
 
 
-    Route::post('goods_archive', [GoodReceviedController::class, 'goodsArchive']);
+    Route::put('goods_archive', [GoodReceviedController::class, 'goodsArchive']);
     Route::post('add_goods_to_store', [GoodReceviedController::class, 'addGoodsToStore']);
     Route::put('edit_goods_in_store', [GoodReceviedController::class, 'editGoodsInStore']);
     Route::put('change_status_goods', [GoodReceviedController::class, 'changeGoodsStatus']);

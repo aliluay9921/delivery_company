@@ -28,6 +28,7 @@ class GoodReceviedController extends Controller
 
     public function getGoodsInStore()
     {
+
         $good_receiveds = GoodReceived::with(['customer', 'delevery_price', 'goods_driver.driver']);
 
         if (isset($_GET['query'])) {
@@ -41,6 +42,9 @@ class GoodReceviedController extends Controller
         }
         if (isset($_GET)) {
             foreach ($_GET as $key => $value) {
+                if ($key == 'archive' || $key == 'order_status' || $key = 'type_deliver') {
+                    $good_receiveds->where($key, $value);
+                }
                 if ($key == 'skip' || $key == 'limit' || $key == 'query') {
                     continue;
                 } else {
@@ -198,6 +202,11 @@ class GoodReceviedController extends Controller
     {
         $request = $request->json()->all();
         $goods = GoodReceived::whereIn('id', $request['goods_id'])->get();
-        // $goods
+        foreach ($goods as $good) {
+            $good->update([
+                'archive' => !$good->archive
+            ]);
+        }
+        return $this->send_response(200, 'تم ارشفة البضائع', [], GoodReceived::whereIn('id', $request['goods_id'])->get());
     }
 }
