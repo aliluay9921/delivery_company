@@ -207,10 +207,10 @@ class UserController extends Controller
         $data['ارباح اليوم'] = 0;
 
         $employees = User::all()->sum('salary');
-        if (isset($_GET['to']) && isset($_GET['from'])) {
-            $customers = Customer::whereBetween('created_at', [$_GET['to'], $_GET['from']])->get()->sum('balance');
-            $drivers = Driver::whereBetween('created_at', [$_GET['to'], $_GET['from']])->get()->sum('balance');
-            $company_balance = GoodReceived::where('order_status', 2)->whereBetween('created_at', [$_GET['to'], $_GET['from']])->get();
+        if (isset($_GET['from']) && isset($_GET['to'])) {
+            $customers = Customer::whereBetween('created_at', [$_GET['from'], $_GET['to']])->get()->sum('balance');
+            $drivers = Driver::whereBetween('created_at', [$_GET['from'], $_GET['to']])->get()->sum('balance');
+            $company_balance = GoodReceived::where('order_status', 2)->whereBetween('created_at', [$_GET['from'], $_GET['to']])->get();
         } else {
             $customers = Customer::all()->sum('balance');
             $drivers = Driver::all()->sum('balance');
@@ -223,7 +223,7 @@ class UserController extends Controller
             }
         }
         // return $data;
-        $data['صافي رصد العملاء'] = $customers;
+        $data['صافي رصيد العملاء'] = $customers;
         $data['صافي رصيد المندوبين'] = $drivers;
         $data['رواتب الموضفين'] = $employees;
         return $this->send_response(200, 'احصائيات الشركة', [], [$data]);
