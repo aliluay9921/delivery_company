@@ -9,9 +9,6 @@ use App\Http\Controllers\GoodReceviedController;
 use App\Http\Controllers\IncomesController;
 use App\Http\Controllers\OutcomesController;
 use App\Http\Controllers\UserController;
-use App\Models\Customer;
-use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,26 +32,32 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('get_goods_in_store', [GoodReceviedController::class, 'getGoodsInStore']);
     Route::get('get_outcomes', [OutcomesController::class, 'getOutcomes']);
     Route::get('get_incomes', [IncomesController::class, 'getIntcomes']);
-
-
     Route::get('company_balance', [UserController::class, 'companyBalance']);
     Route::get('statistics', [UserController::class, 'statistics']);
     Route::get('get_logs', [UserController::class, 'getLogs']);
-
-
-
-
     Route::get('get_checks', [GoodDriverController::class, 'getChecks']);
+
+
+
     Route::post('add_check', [GoodDriverController::class, 'addCheck']);
     Route::post('add_outcome', [OutcomesController::class, 'addOutcome']);
     Route::post('add_income', [IncomesController::class, 'addIntcome']);
+    Route::post('add_goods_to_store', [GoodReceviedController::class, 'addGoodsToStore']);
+    Route::post('add_customers', [CustomersController::class, 'addCustomers']);
+    Route::post('add_driver', [DriverController::class, 'addDriver']);
 
 
 
     Route::put('goods_archive', [GoodReceviedController::class, 'goodsArchive']);
-    Route::post('add_goods_to_store', [GoodReceviedController::class, 'addGoodsToStore']);
     Route::put('edit_goods_in_store', [GoodReceviedController::class, 'editGoodsInStore']);
     Route::put('change_status_goods', [GoodReceviedController::class, 'changeGoodsStatus']);
+    Route::put('toggle_active_delivery_price', [DeliveryPriceController::class, 'toggleActiveDeliveryPrice']);
+    Route::put('toggle_active_user', [UserController::class, 'toggleActiveUser']);
+    Route::put('toggle_active_customer', [CustomersController::class, 'toggleActiveCustomer']);
+    Route::put('toggle_active_driver', [DriverController::class, 'toggleActiveDriver']);
+    Route::put('edit_user', [UserController::class, 'editUser']);
+    Route::put('edit_driver', [DriverController::class, 'editDriver']);
+    Route::put('edit_customer', [CustomersController::class, 'editCustomer']);
 
 
     Route::middleware(['admin'])->group(function () {
@@ -63,16 +66,6 @@ Route::middleware(['auth:api'])->group(function () {
 
         Route::post('add_delivery_price', [DeliveryPriceController::class, 'addDeliveryPrice']);
         Route::post('add_user', [UserController::class, 'addUser']);
-        Route::post('add_customers', [CustomersController::class, 'addCustomers']);
-        Route::post('add_driver', [DriverController::class, 'addDriver']);
-
-        Route::put('toggle_active_delivery_price', [DeliveryPriceController::class, 'toggleActiveDeliveryPrice']);
-        Route::put('toggle_active_user', [UserController::class, 'toggleActiveUser']);
-        Route::put('toggle_active_customer', [CustomersController::class, 'toggleActiveCustomer']);
-        Route::put('toggle_active_driver', [DriverController::class, 'toggleActiveDriver']);
-        Route::put('edit_user', [UserController::class, 'editUser']);
-        Route::put('edit_driver', [DriverController::class, 'editDriver']);
-        Route::put('edit_customer', [CustomersController::class, 'editCustomer']);
 
 
         Route::delete('delete_user', [UserController::class, 'deleteUser']);
