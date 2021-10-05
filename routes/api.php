@@ -34,6 +34,8 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('get_delivery_price', [DeliveryPriceController::class, 'getDeliveryPrice']);
     Route::get('get_goods_in_store', [GoodReceviedController::class, 'getGoodsInStore']);
     Route::get('get_outcomes', [OutcomesController::class, 'getOutcomes']);
+    Route::get('get_incomes', [IncomesController::class, 'getIntcomes']);
+
 
     Route::get('company_balance', [UserController::class, 'companyBalance']);
     Route::get('statistics', [UserController::class, 'statistics']);
