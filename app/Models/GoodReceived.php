@@ -11,7 +11,7 @@ class GoodReceived extends Model
 {
     use HasFactory, SoftDeletes, Uuids;
     protected $guarded = [];
-    protected $with = ['delevery_price'];
+    protected $with = ['delevery_price', 'statistics'];
 
     public function customer()
     {
@@ -24,5 +24,15 @@ class GoodReceived extends Model
     public function goods_driver()
     {
         return $this->hasOne(GoodsDriver::class, 'goods_received_id');
+    }
+
+    public function statistics()
+    {
+        $statistics = [];
+        $goods = GoodReceived::all();
+        $statistics = [
+            'البضائع المؤرشفة' => $goods->where('archive', 1)->count()
+        ];
+        return $statistics;
     }
 }
