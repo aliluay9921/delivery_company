@@ -84,6 +84,6 @@ class DeliveryPriceController extends Controller
         $delivery_price->update([
             'active' => !$delivery_price
         ]);
-        return $this->send_response(200, 'تم تغيرر حالة التسعيرة', [], $delivery_price);
+        return $this->send_response(200, 'تم تغيرر حالة التسعيرة', [], DeliveryPrice::find($request['delivery_price_id']));
     }
 }
