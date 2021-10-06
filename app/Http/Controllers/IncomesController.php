@@ -49,7 +49,7 @@ class IncomesController extends Controller
             'type' => 'required',
             'name' => 'required',
             'value' => 'required',
-            'customer_id' => 'exists:customers,id',
+            'customer_id' => 'nullable|exists:customers,id',
         ], [
             'name.required' => 'هذا العنصر مطلوب ',
             'value.required' => 'هذا العنصر مطلوب',
@@ -78,6 +78,6 @@ class IncomesController extends Controller
         }
         $income = Income::create($data);
         Log::create($log);
-        return $this->send_response(200, 'تم اضافة قيمة الى القاصة ', [], Income::find($income->id));
+        return $this->send_response(200, 'تم اضافة قيمة الى القاصة ', [], Income::with('customer')->find($income->id));
     }
 }
