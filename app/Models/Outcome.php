@@ -29,11 +29,11 @@ class Outcome extends Model
             $company_balance += $good->delevery_price->company_cost;
         }
         $outcoms = Outcome::whereIn('type', [2, 3])->where('paid_company', false);
-        $incomes = Income::where('type', 0)->where('paid_company', false);
+        $incomes = Income::where('type', 0)->where('paid_company', false)->get();
         foreach ($outcoms->get() as $outcom) {
             $company_balance -= $outcom->value;
         }
-        foreach ($incomes->get() as $income) {
+        foreach ($incomes as $income) {
             $company_balance += $income->value;
         }
 
