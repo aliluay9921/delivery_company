@@ -14,7 +14,7 @@ class CreateGoodReceivedsTable extends Migration
     public function up()
     {
         Schema::create('good_receiveds', function (Blueprint $table) {
-            $table->uuid('id');
+            $table->uuid('id')->primary();
             $table->uuid('customer_id');
             $table->uuid('delivery_price_id');
             $table->integer('type_deliver');
