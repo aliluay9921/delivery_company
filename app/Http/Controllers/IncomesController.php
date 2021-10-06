@@ -66,10 +66,14 @@ class IncomesController extends Controller
             'name' => $request['name'],
             'value' => $request['value'],
         ];
+        if ($request['type'] == 1) {
+            $log['type'] = 4;
+        } else {
+            $log['type'] = 5;
+        }
         $log = [
             'value' => $request['value'],
             'log_type' =>  $request['name'],
-            'type' => $request['type'],
             'user_id'   => auth()->user()->id,
         ];
         if (array_key_exists('customer_id', $request)) {

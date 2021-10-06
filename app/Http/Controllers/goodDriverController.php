@@ -79,7 +79,7 @@ class GoodDriverController extends Controller
                 'note' => $goods->note,
             ]);
         }
-
-        return $this->send_response(200, 'تم انشاء وصل', [], GoodsDriver::with('driver', 'good', 'good.customer', 'good.delevery_price')->whereIn('id', $request['goods_received_id'])->get());
+        $good_receiveds = GoodReceived::with(['customer', 'delevery_price', 'goods_driver.driver'])->whereIn('id', $request['goods_received_id']);
+        return $this->send_response(200, 'تم انشاء وصل', [], $good_receiveds->get());
     }
 }
