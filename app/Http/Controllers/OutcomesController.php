@@ -8,6 +8,7 @@ use App\Models\Outcome;
 use App\Models\Customer;
 use App\Traits\Pagination;
 use App\Models\GoodReceived;
+use App\Models\User;
 use App\Traits\SendResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
@@ -90,7 +91,7 @@ class OutcomesController extends Controller
             }
         } elseif ($request['type'] == 2 || $request['type'] == 3) {
             $log['type'] = 6;
-            $company_balance = Outcome::first();
+            $company_balance = User::first();
             if ($company_balance->CompanyBalance > $request['value']) {
                 $outcome['value'] = $request['value'];
             } else {
