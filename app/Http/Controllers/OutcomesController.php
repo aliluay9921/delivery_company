@@ -68,7 +68,7 @@ class OutcomesController extends Controller
             $log['target_id'] = $request['target_id'];
         }
         if ($request['type'] == 0) {
-            $log['type'] = 0;
+            $log['type'] = 4;
             $driver = Driver::find($request['target_id']);
             if ($driver) {
                 if ($driver->balance > $request['value']) {
@@ -78,7 +78,7 @@ class OutcomesController extends Controller
                 }
             }
         } elseif ($request['type'] == 1) {
-            $log['type'] = 1;
+            $log['type'] = 5;
 
             $customer = Customer::find($request['target_id']);
             if ($customer) {
@@ -89,7 +89,7 @@ class OutcomesController extends Controller
                 }
             }
         } elseif ($request['type'] == 2 || $request['type'] == 3) {
-            $log['type'] = 2;
+            $log['type'] = 6;
             $company_balance = Outcome::first();
             if ($company_balance->CompanyBalance > $request['value']) {
                 $outcome['value'] = $request['value'];

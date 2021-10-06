@@ -67,9 +67,9 @@ class IncomesController extends Controller
             'value' => $request['value'],
         ];
         if ($request['type'] == 1) {
-            $log['type'] = 4;
+            $log['type'] = 2;
         } else {
-            $log['type'] = 5;
+            $log['type'] = 3;
         }
         $log = [
             'value' => $request['value'],
