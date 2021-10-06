@@ -222,7 +222,11 @@ class UserController extends Controller
             $customers = Customer::all()->sum('balance');
             $drivers = Driver::all()->sum('balance');
             $outcom = Outcome::first();
-            $company_balance = $outcom->CompanyBalance;
+            if (!$outcom) {
+                $company_balance = 0;
+            } else {
+                $company_balance = $outcom->CompanyBalance;
+            }
             $data['صافي ربح الشركة'] = $company_balance;
             $company_balance_daily = GoodReceived::where('paid_company', false)->where('order_status', 2)->get();
             foreach ($company_balance_daily as $balance) {
