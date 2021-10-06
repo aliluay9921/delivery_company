@@ -204,7 +204,7 @@ class UserController extends Controller
     public function companyBalance()
     {
         $data = [];
-        $data['صافي ربح الشركة'] = 0;
+        $data['رصيد الشركة'] = 0;
         $data['ارباح اليوم'] = 0;
 
         $employees = User::all()->sum('salary');
@@ -213,7 +213,7 @@ class UserController extends Controller
             $drivers = Driver::whereBetween('created_at', [$_GET['from'], $_GET['to']])->get()->sum('balance');
             $company_balance = GoodReceived::where('paid_company', false)->where('order_status', 2)->whereBetween('created_at', [$_GET['from'], $_GET['to']])->get();
             foreach ($company_balance as $balance) {
-                $data['رصد الشركة'] += $balance->delevery_price->company_cost;
+                $data['رصيد الشركة'] += $balance->delevery_price->company_cost;
                 if ($balance->created_at->toDateString() === Carbon::today()->toDateString()) {
                     $data['ارباح اليوم'] += $balance->delevery_price->company_cost;
                 }
@@ -227,7 +227,7 @@ class UserController extends Controller
             } else {
                 $company_balance = $outcom->CompanyBalance;
             }
-            $data['رصد الشركة'] = $company_balance;
+            $data['رصيد الشركة'] = $company_balance;
             $company_balance_daily = GoodReceived::where('paid_company', false)->where('order_status', 2)->get();
             foreach ($company_balance_daily as $balance) {
                 if ($balance->created_at->toDateString() === Carbon::today()->toDateString()) {
