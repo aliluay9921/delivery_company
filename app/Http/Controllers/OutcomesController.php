@@ -109,6 +109,6 @@ class OutcomesController extends Controller
 
         Log::create($log);
 
-        return $this->send_response(200, 'تم اضافة صرف', [], Outcome::find($outcome->id));
+        return $this->send_response(200, 'تم اضافة صرف', [], Outcome::with('customer', 'driver')->find($outcome->id));
     }
 }
