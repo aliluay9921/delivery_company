@@ -24,8 +24,8 @@ class Outcome extends Model
     public function getCompanyBalanceAttribute()
     {
         $company_balance = 0;
-        $goods = GoodReceived::where('order_status', 2)->where('paid_company', false)->get();
-        foreach ($goods as $good) {
+        $goods = GoodReceived::where('order_status', 2)->where('paid_company', false);
+        foreach ($goods->get() as $good) {
             $company_balance += $good->delevery_price->company_cost;
         }
         $outcoms = Outcome::whereIn('type', [2, 3])->where('paid_company', false);
