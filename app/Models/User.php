@@ -22,6 +22,8 @@ class User extends Authenticatable
      */
     protected $guarded = [];
     protected $dates = ['deleted_at'];
+    protected $appends = ['CompanyBalance'];
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -47,5 +49,29 @@ class User extends Authenticatable
     public function permissions()
     {
         return $this->belongsToMany(Permission::class, 'user_permissions', 'user_id', 'permission_id');
+    }
+    public function getCompanyBalanceAttribute()
+    {
+
+        $company_balance = 0;
+        $goods = GoodReceived::where('order_status', 2)->where('paid_company', false);
+        foreach ($goods->get() as $good) {
+            $company_balance += $good->delevery_price->company_cost;
+        }
+        $outcoms = Outcome::whereIn('type', [2, 3])->where('paid_company', false);
+        $incomes = Income::where('type', 0)->where('paid_company', false);
+        foreach ($outcoms->get() as $outcom) {
+            $company_balance -= $outcom->value;
+        }
+        foreach ($incomes->get() as $income) {
+            $company_balance += $income->value;
+        }
+
+        if ($company_balance == 0) {
+            $goods->update(['paid_company' => true]);
+            $outcoms->update(['paid_company' => true]);
+            $incomes->update(['paid_company' => true]);
+        }
+        return $company_balance;
     }
 }

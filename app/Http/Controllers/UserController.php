@@ -221,11 +221,11 @@ class UserController extends Controller
         } else {
             $customers = Customer::all()->sum('balance');
             $drivers = Driver::all()->sum('balance');
-            $outcom = Outcome::first();
-            if (!$outcom) {
+            $user = User::first();
+            if (!$user) {
                 $company_balance = 0;
             } else {
-                $company_balance = $outcom->CompanyBalance;
+                $company_balance = $user->CompanyBalance;
             }
             $data['رصيد الشركة'] = $company_balance;
             $company_balance_daily = GoodReceived::where('paid_company', false)->where('order_status', 2)->get();
