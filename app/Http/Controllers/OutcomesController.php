@@ -64,6 +64,11 @@ class OutcomesController extends Controller
             'name' => $request['name'],
             'type' => $request['type'],
         ];
+        $log = [
+            'value' => $request['value'],
+            'log_type' =>  $request['name'],
+            'user_id'   => auth()->user()->id,
+        ];
         if (array_key_exists('target_id', $request)) {
             $outcome['target_id'] = $request['target_id'];
             $log['target_id'] = $request['target_id'];
@@ -100,11 +105,7 @@ class OutcomesController extends Controller
         }
         $outcome = Outcome::create($outcome);
 
-        $log = [
-            'value' => $request['value'],
-            'log_type' =>  $request['name'],
-            'user_id'   => auth()->user()->id,
-        ];
+
 
         Log::create($log);
 

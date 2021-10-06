@@ -66,19 +66,18 @@ class IncomesController extends Controller
             'name' => $request['name'],
             'value' => $request['value'],
         ];
-        if ($request['type'] == 1) {
-            $log['type'] = 2;
-        } else {
-            $log['type'] = 3;
-        }
         $log = [
             'value' => $request['value'],
             'log_type' =>  $request['name'],
             'user_id'   => auth()->user()->id,
         ];
+
         if (array_key_exists('customer_id', $request)) {
             $data['customer_id'] = $request['customer_id'];
             $log['target_id'] = $request['customer_id'];
+            $log['type'] = 2;
+        } else {
+            $log['type'] = 3;
         }
         $income = Income::create($data);
         Log::create($log);
