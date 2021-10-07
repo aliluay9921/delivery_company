@@ -29,18 +29,18 @@ class PermissionSeeder extends Seeder
         ]);
         Permission::create([
             'name' => 'add_employee',
-            'name_ar' => 'اضافة موضفين',
+            'name_ar' => 'ادارة موضفين',
             'active'  => true
         ]);
 
         Permission::create([
             'name' => 'add driver',
-            'name_ar' => 'اضافة مندوبين',
+            'name_ar' => 'ادارة مندوبين',
             'active'  => true
         ]);
         Permission::create([
             'name' => 'add customer',
-            'name_ar' => 'اضافة عملاء',
+            'name_ar' => 'ادارة عملاء',
             'active'  => true
         ]);
         Permission::create([

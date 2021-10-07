@@ -44,7 +44,6 @@ class UserPolicy
         $user = User::with('permissions')->find($user->id);
         $get = $user->permissions()->where('name', 'add_employee')->where('active', 1)->first();
         return $get ? Response::allow()  : Response::deny('You are not the author of the post.');
-        // ? true : $this->deny('غير مصرح لك في هذه العملية')
     }
 
     /**
@@ -54,9 +53,18 @@ class UserPolicy
      * @param  \App\Models\User  $model
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, User $model)
+    public function update(User $user)
     {
-        //
+        $user = User::with('permissions')->find($user->id);
+        $get = $user->permissions()->where('name', 'add_employee')->where('active', 1)->first();
+        return $get ? Response::allow()  : Response::deny('You are not the author of the post.');
+    }
+
+    public function toggleActiveUser(User $user)
+    {
+        $user = User::with('permissions')->find($user->id);
+        $get = $user->permissions()->where('name', 'add_employee')->where('active', 1)->first();
+        return $get ? Response::allow()  : Response::deny('You are not the author of the post.');
     }
 
     /**

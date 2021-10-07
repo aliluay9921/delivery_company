@@ -3,11 +3,11 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\Driver;
+use App\Models\Income;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class DriverPolicy
+class IncomePolicy
 {
     use HandlesAuthorization;
 
@@ -26,10 +26,10 @@ class DriverPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Driver  $driver
+     * @param  \App\Models\Income  $income
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Driver $driver)
+    public function view(User $user, Income $income)
     {
         //
     }
@@ -43,7 +43,7 @@ class DriverPolicy
     public function create(User $user)
     {
         $user = User::with('permissions')->find($user->id);
-        $get = $user->permissions()->where('name', 'add driver')->where('active', 1)->first();
+        $get = $user->permissions()->where('name', 'Accounter')->where('active', 1)->first();
         return $get ? Response::allow()  : Response::deny('You are not the author of the post.');
     }
 
@@ -51,30 +51,22 @@ class DriverPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Driver  $driver
+     * @param  \App\Models\Income  $income
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user)
+    public function update(User $user, Income $income)
     {
-        $user = User::with('permissions')->find($user->id);
-        $get = $user->permissions()->where('name', 'add driver')->where('active', 1)->first();
-        return $get ? Response::allow()  : Response::deny('You are not the author of the post.');
-    }
-    public function toggleActiveDriver(User $user)
-    {
-        $user = User::with('permissions')->find($user->id);
-        $get = $user->permissions()->where('name', 'add driver')->where('active', 1)->first();
-        return $get ? Response::allow()  : Response::deny('You are not the author of the post.');
+        //
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Driver  $driver
+     * @param  \App\Models\Income  $income
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Driver $driver)
+    public function delete(User $user, Income $income)
     {
         //
     }
@@ -83,10 +75,10 @@ class DriverPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Driver  $driver
+     * @param  \App\Models\Income  $income
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Driver $driver)
+    public function restore(User $user, Income $income)
     {
         //
     }
@@ -95,10 +87,10 @@ class DriverPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Driver  $driver
+     * @param  \App\Models\Income  $income
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Driver $driver)
+    public function forceDelete(User $user, Income $income)
     {
         //
     }

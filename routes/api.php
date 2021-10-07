@@ -11,6 +11,10 @@ use App\Http\Controllers\OutcomesController;
 use App\Http\Controllers\UserController;
 use App\Models\Customer;
 use App\Models\Driver;
+use App\Models\GoodReceived;
+use App\Models\GoodsDriver;
+use App\Models\Income;
+use App\Models\Outcome;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -42,27 +46,29 @@ Route::middleware(['auth:api'])->group(function () {
 
 
 
-    Route::post('add_check', [GoodDriverController::class, 'addCheck']);
-    Route::post('add_outcome', [OutcomesController::class, 'addOutcome']);
-    Route::post('add_income', [IncomesController::class, 'addIntcome']);
-    Route::post('add_goods_to_store', [GoodReceviedController::class, 'addGoodsToStore']);
+    Route::post('add_check', [GoodDriverController::class, 'addCheck'])->middleware(['can:create,' . GoodsDriver::class]);
+    Route::post('add_outcome', [OutcomesController::class, 'addOutcome'])->middleware(['can:create,' . Outcome::class]);
+    Route::post('add_income', [IncomesController::class, 'addIntcome'])->middleware(['can:create,' . Income::class]);
+    Route::post('add_goods_to_store', [GoodReceviedController::class, 'addGoodsToStore'])->middleware(['can:create,' . GoodReceived::class]);
     Route::post('add_customers', [CustomersController::class, 'addCustomers'])->middleware(['can:create,' . Customer::class]);
     Route::post('add_driver', [DriverController::class, 'addDriver'])->middleware(['can:create,' . Driver::class]);
-
-
-
-    Route::put('goods_archive', [GoodReceviedController::class, 'goodsArchive']);
-    Route::put('edit_goods_in_store', [GoodReceviedController::class, 'editGoodsInStore']);
-    Route::put('change_status_goods', [GoodReceviedController::class, 'changeGoodsStatus']);
-    Route::put('toggle_active_delivery_price', [DeliveryPriceController::class, 'toggleActiveDeliveryPrice']);
-    Route::put('toggle_active_user', [UserController::class, 'toggleActiveUser']);
-    Route::put('toggle_active_customer', [CustomersController::class, 'toggleActiveCustomer']);
-    Route::put('toggle_active_driver', [DriverController::class, 'toggleActiveDriver']);
-    Route::put('edit_user', [UserController::class, 'editUser']);
-    Route::put('edit_driver', [DriverController::class, 'editDriver']);
-    Route::put('edit_customer', [CustomersController::class, 'editCustomer']);
-
     Route::post('add_user', [UserController::class, 'addUser'])->middleware(['can:create,' . User::class]);
+
+
+
+    Route::put('goods_archive', [GoodReceviedController::class, 'goodsArchive'])->middleware(['can:archive,' . GoodReceived::class]);
+    Route::put('edit_goods_in_store', [GoodReceviedController::class, 'editGoodsInStore']);
+    Route::put('change_status_goods', [GoodReceviedController::class, 'changeGoodsStatus'])->middleware(['can:changeGoodsStatus,' . User::class]);
+    Route::put('toggle_active_delivery_price', [DeliveryPriceController::class, 'toggleActiveDeliveryPrice']);
+
+    Route::put('toggle_active_user', [UserController::class, 'toggleActiveUser'])->middleware(['can:toggleActiveUser,' . User::class]);
+    Route::put('toggle_active_customer', [CustomersController::class, 'toggleActiveCustomer'])->middleware(['can:toggleActiveCustomer,' . Customer::class]);
+    Route::put('toggle_active_driver', [DriverController::class, 'toggleActiveDriver'])->middleware(['can:toggleActiveDriver,' . Driver::class]);
+
+    Route::put('edit_user', [UserController::class, 'editUser'])->middleware(['can:update,' . User::class]);
+    Route::put('edit_driver', [DriverController::class, 'editDriver'])->middleware(['can:update,' . Driver::class]);
+    Route::put('edit_customer', [CustomersController::class, 'editCustomer'])->middleware(['can:update,' . Customer::class]);
+
 
 
     Route::middleware(['admin'])->group(function () {
