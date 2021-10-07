@@ -18,7 +18,7 @@ class IncomesController extends Controller
     {
         $incomes = Income::with('customer');
         if (isset($_GET['query'])) {
-            $columns = Schema::getColumnListing('outcomes');
+            $columns = Schema::getColumnListing('incomes');
             foreach ($columns as $column) {
                 $incomes->orWhere($column, 'LIKE', '%' . $_GET['query'] . '%');
             }

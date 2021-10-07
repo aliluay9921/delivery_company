@@ -38,8 +38,8 @@ class Handler extends ExceptionHandler
         //     //
         // });
         $this->renderable(function (Throwable $e, $request) {
-            if ($e->getStatusCode() == 403)
-                return response()->json(["error" => "غير مصرح لك بهذا الاجراء"]);
+            // if ($e->getStatusCode() == 403)
+            //     return response()->json(["error" => "غير مصرح لك بهذا الاجراء"]);
             return response()->json(["error" => $e->getMessage()]);
         });
     }
