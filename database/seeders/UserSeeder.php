@@ -22,15 +22,13 @@ class UserSeeder extends Seeder
             'password'      => bcrypt('11111111'),
             'address'       => 'بغداد -شارع فلسطين',
         ]);
-        $permission = Permission::first();
-        $user = User::create([
+        User::create([
             'full_name'     => 'employee 1',
             'phone_number'  => '0771111111',
             'password'      => bcrypt('11111111'),
             'address'       => 'بغداد -شارع فلسطين',
-            'salary'        => 500
+            'salary'        => 800
         ]);
-        $user->permissions()->sync($permission);
         $admin->permissions()->sync($permission_admin);
     }
 }

@@ -16,11 +16,7 @@ class PermissionSeeder extends Seeder
     public function run()
     {
 
-        Permission::create([
-            'name' => 'add_employee',
-            'name_ar' => 'اضافة موضفين',
-            'active'  => true
-        ]);
+
         Permission::create([
             'name' => 'admin',
             'name_ar' => 'المدير',
@@ -29,6 +25,27 @@ class PermissionSeeder extends Seeder
         Permission::create([
             'name' => 'Accounter',
             'name_ar' => 'كشف حسابات',
+            'active'  => true
+        ]);
+        Permission::create([
+            'name' => 'add_employee',
+            'name_ar' => 'اضافة موضفين',
+            'active'  => true
+        ]);
+
+        Permission::create([
+            'name' => 'add driver',
+            'name_ar' => 'اضافة مندوبين',
+            'active'  => true
+        ]);
+        Permission::create([
+            'name' => 'add customer',
+            'name_ar' => 'اضافة عملاء',
+            'active'  => true
+        ]);
+        Permission::create([
+            'name' => 'goods Managment',
+            'name_ar' => 'ادارة البضائع',
             'active'  => true
         ]);
     }
