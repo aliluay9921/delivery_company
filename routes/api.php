@@ -9,6 +9,9 @@ use App\Http\Controllers\GoodReceviedController;
 use App\Http\Controllers\IncomesController;
 use App\Http\Controllers\OutcomesController;
 use App\Http\Controllers\UserController;
+use App\Models\Customer;
+use App\Models\Driver;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,8 +46,8 @@ Route::middleware(['auth:api'])->group(function () {
     Route::post('add_outcome', [OutcomesController::class, 'addOutcome']);
     Route::post('add_income', [IncomesController::class, 'addIntcome']);
     Route::post('add_goods_to_store', [GoodReceviedController::class, 'addGoodsToStore']);
-    Route::post('add_customers', [CustomersController::class, 'addCustomers']);
-    Route::post('add_driver', [DriverController::class, 'addDriver']);
+    Route::post('add_customers', [CustomersController::class, 'addCustomers'])->middleware(['can:create,' . Customer::class]);
+    Route::post('add_driver', [DriverController::class, 'addDriver'])->middleware(['can:create,' . Driver::class]);
 
 
 
@@ -59,13 +62,14 @@ Route::middleware(['auth:api'])->group(function () {
     Route::put('edit_driver', [DriverController::class, 'editDriver']);
     Route::put('edit_customer', [CustomersController::class, 'editCustomer']);
 
+    Route::post('add_user', [UserController::class, 'addUser'])->middleware(['can:create,' . User::class]);
+
 
     Route::middleware(['admin'])->group(function () {
         Route::get('get_users', [UserController::class, 'getUsers']);
         Route::get('get_permissions', [UserController::class, 'getPermissions']);
 
         Route::post('add_delivery_price', [DeliveryPriceController::class, 'addDeliveryPrice']);
-        Route::post('add_user', [UserController::class, 'addUser']);
 
 
         Route::delete('delete_user', [UserController::class, 'deleteUser']);

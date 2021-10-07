@@ -25,7 +25,7 @@ class Customer extends Model
         // $goods = $this->goods_recevied()->where('order_status', 1)->get();
         $goods = GoodReceived::where('customer_id', $this->id)->where('order_status', 2)->where('paid_customer', false);
         $outcoms = Outcome::where('type', 1)->where('target_id', $this->id)->where('paid_customer', false);
-        $incomes = Income::where('type', 1)->where('paid_customer', false);
+        $incomes = Income::where('customer_id', $this->id)->where('type', 1)->where('paid_customer', false);
         foreach ($outcoms->get() as $outcom) {
             $price -= $outcom->value;
         }

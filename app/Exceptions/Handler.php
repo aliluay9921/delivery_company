@@ -34,8 +34,13 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        // $this->reportable(function (Throwable $e) {
+        //     //
+        // });
+        $this->renderable(function (Throwable $e, $request) {
+            if ($e->getStatusCode() == 403)
+                return response()->json(["error" => "غير مصرح لك بهذا الاجراء"]);
+            return response()->json(["error" => $e->getMessage()]);
         });
     }
 }
