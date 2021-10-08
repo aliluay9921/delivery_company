@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
-use App\Models\GoodReceived;
-use App\Models\GoodsDriver;
 use App\Traits\Pagination;
+use App\Models\GoodsDriver;
+use App\Models\GoodReceived;
 use App\Traits\SendResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class CustomersController extends Controller
 {
@@ -49,6 +50,7 @@ class CustomersController extends Controller
     public function addCustomers(Request $request)
     {
         $request = $request->json()->all();
+
         $validator = Validator::make($request, [
             'name'     => 'required',
             'phone_number'  => 'required|min:11|max:11',
@@ -63,7 +65,9 @@ class CustomersController extends Controller
             'phone_number2.max' => 'يرجى ادخال رقم هاتف صالح',
             'address.required' => 'عنوان العميل مطلوب',
         ]);
+
         if ($validator->fails()) {
+
             return $this->send_response(401, 'خطأ بالمدخلات', $validator->errors(), []);
         }
         $data = [];

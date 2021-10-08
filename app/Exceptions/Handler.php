@@ -2,8 +2,11 @@
 
 namespace App\Exceptions;
 
-use Throwable;
 use Exception;
+use Throwable;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -40,9 +43,23 @@ class Handler extends ExceptionHandler
         // });
 
         $this->renderable(function (Throwable $exception, $request) {
-            return response()->json([
-                'message' => $exception->getMessage(),
-            ]);
+            if ($exception instanceof Exception) {
+                if ($exception->getMessage() == 'Route [login] not defined.') {
+                    return response()->json(
+                        [
+                            'message' => $exception->getMessage(),
+                        ],
+                        402
+                    );
+                } elseif ($exception->getMessage() == 'غير مصرح لك بالدخول الى هنا') {
+                    return response()->json(
+                        [
+                            'message' => $exception->getMessage(),
+                        ],
+                        403
+                    );
+                }
+            }
         });
     }
 }
