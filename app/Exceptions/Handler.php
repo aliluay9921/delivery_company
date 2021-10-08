@@ -33,17 +33,16 @@ class Handler extends ExceptionHandler
      *
      * @return void
      */
+
     public function register()
     {
-        return $this->reportable(function (Throwable $e) {
-        });
-
-        // $this->renderable(function (Throwable $e, $request) {
-
-        //     return response()->json([
-        //         'code' => $e->getStatusCode(),
-        //         'message' => $e->getMessage(),
-        //     ], $e->getStatusCode());
+        // return $this->reportable(function (Throwable $e) {
         // });
+
+        $this->renderable(function (Throwable $exception, $request) {
+            return response()->json([
+                'message' => $exception->getMessage(),
+            ]);
+        });
     }
 }
