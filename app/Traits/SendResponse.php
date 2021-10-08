@@ -6,7 +6,7 @@ trait SendResponse
 {
 
 
-    public function send_response($code, $message, $error, $result = null, $excaption = null, $token = null, $count = -1)
+    public function send_response($code, $message, $error, $result = null, $token = null, $count = -1)
     {
 
 
@@ -27,6 +27,6 @@ trait SendResponse
             'count' => $count
 
         ];
-        return response()->json($response, $excaption);
+        return response()->json($response);
     }
 }
