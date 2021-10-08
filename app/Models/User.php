@@ -59,7 +59,7 @@ class User extends Authenticatable
             $company_balance += $good->delevery_price->company_cost;
         }
         $outcoms = Outcome::whereIn('type', [2, 3])->where('paid_company', false);
-        $incomes = Income::where('type', 0)->where('paid_company', false);
+        $incomes = Income::where('type', 2)->where('paid_company', false);
         foreach ($outcoms->get() as $outcom) {
             $company_balance -= $outcom->value;
         }
