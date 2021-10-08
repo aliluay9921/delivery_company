@@ -60,7 +60,7 @@ Route::middleware(['auth:api', 'active'])->group(function () {
 
     Route::put('goods_archive', [GoodReceviedController::class, 'goodsArchive'])->middleware(['can:archive,' . GoodReceived::class]);
     // Route::put('edit_goods_in_store', [GoodReceviedController::class, 'editGoodsInStore']);
-    Route::put('change_status_goods', [GoodReceviedController::class, 'changeGoodsStatus'])->middleware(['can:changeGoodsStatus,' . User::class]);
+    Route::put('change_status_goods', [GoodReceviedController::class, 'changeGoodsStatus'])->middleware(['can:changeGoodsStatus,' . GoodReceived::class]);
     Route::put('toggle_active_delivery_price', [DeliveryPriceController::class, 'toggleActiveDeliveryPrice']);
 
     Route::put('toggle_active_user', [UserController::class, 'toggleActiveUser'])->middleware(['can:toggleActiveUser,' . User::class]);
