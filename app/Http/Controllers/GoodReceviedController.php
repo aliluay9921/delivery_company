@@ -40,7 +40,7 @@ class GoodReceviedController extends Controller
 
                 $columns = Schema::getColumnListing('good_receiveds');
                 $q->whereHas('customer', function ($q) {
-                    $q->orwhere('name', 'LIKE', $_GET['query']);
+                    $q->orwhere('nae', 'LIKE', $_GET['query']);
                 });
                 foreach ($columns as $column) {
                     $q->orWhere($column, 'LIKE', '%' . $_GET['query'] . '%');
