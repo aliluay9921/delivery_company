@@ -23,26 +23,62 @@ class PermissionSeeder extends Seeder
             'active'  => true
         ]);
         Permission::create([
+            'name' => 'Company Balance',
+            'name_ar' => 'صندوق الشركة',
+            'active'  => true
+        ]);
+        Permission::create([
             'name' => 'Accounter',
             'name_ar' => 'كشف حسابات',
             'active'  => true
         ]);
         Permission::create([
-            'name' => 'add_employee',
-            'name_ar' => 'ادارة موضفين',
+            'name' => 'add employee',
+            'name_ar' => 'اضافة موضفين',
+            'active'  => true
+        ]);
+        Permission::create([
+            'name' => 'edit employee',
+            'name_ar' => 'تعديل موضفين',
+            'active'  => true
+        ]);
+        Permission::create([
+            'name' => 'view employee',
+            'name_ar' => 'مشاهدة موضفين',
             'active'  => true
         ]);
 
         Permission::create([
             'name' => 'add driver',
-            'name_ar' => 'ادارة مندوبين',
+            'name_ar' => 'اضافة مندوبين',
+            'active'  => true
+        ]);
+        Permission::create([
+            'name' => 'edit driver',
+            'name_ar' => 'تعديل مندوبين',
+            'active'  => true
+        ]);
+        Permission::create([
+            'name' => 'view driver',
+            'name_ar' => 'مشاهدة مندوبين',
             'active'  => true
         ]);
         Permission::create([
             'name' => 'add customer',
-            'name_ar' => 'ادارة عملاء',
+            'name_ar' => 'اضافة عملاء',
             'active'  => true
         ]);
+        Permission::create([
+            'name' => 'edit customer',
+            'name_ar' => 'تعديل عملاء',
+            'active'  => true
+        ]);
+        Permission::create([
+            'name' => 'view customer',
+            'name_ar' => 'مشاهدة عملاء',
+            'active'  => true
+        ]);
+
         Permission::create([
             'name' => 'goods Managment',
             'name_ar' => 'ادارة البضائع',

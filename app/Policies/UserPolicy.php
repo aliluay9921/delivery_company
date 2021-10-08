@@ -30,7 +30,9 @@ class UserPolicy
      */
     public function view(User $user, User $model)
     {
-        //
+        $user = User::with('permissions')->find($user->id);
+        $get = $user->permissions()->where('name', 'view employee')->where('active', 1)->first();
+        return $get ? Response::allow()  : Response::deny('غير مصرح لك بالدخول الى هنا ');
     }
 
     /**
@@ -42,8 +44,8 @@ class UserPolicy
     public function create(User $user)
     {
         $user = User::with('permissions')->find($user->id);
-        $get = $user->permissions()->where('name', 'add_employee')->where('active', 1)->first();
-        return $get ? Response::allow()  : Response::deny('You are not the author of the post.');
+        $get = $user->permissions()->whereIn('name', ['add employee', 'admin'])->where('active', 1)->first();
+        return $get ? Response::allow()  : Response::deny('غير مصرح لك بالدخول الى هنا ');
     }
 
     /**
@@ -56,15 +58,22 @@ class UserPolicy
     public function update(User $user)
     {
         $user = User::with('permissions')->find($user->id);
-        $get = $user->permissions()->where('name', 'add_employee')->where('active', 1)->first();
-        return $get ? Response::allow()  : Response::deny('You are not the author of the post.');
+        $get = $user->permissions()->whereIn('name', ['edit employee', 'admin'])->where('active', 1)->first();
+        return $get ? Response::allow()  : Response::deny('غير مصرح لك بالدخول الى هنا ');
     }
 
     public function toggleActiveUser(User $user)
     {
         $user = User::with('permissions')->find($user->id);
-        $get = $user->permissions()->where('name', 'add_employee')->where('active', 1)->first();
-        return $get ? Response::allow()  : Response::deny('You are not the author of the post.');
+        $get = $user->permissions()->whereIn('name', ['edit employee', 'admin'])->where('active', 1)->first();
+        return $get ? Response::allow()  : Response::deny('غير مصرح لك بالدخول الى هنا ');
+    }
+
+    public function companyBalance(User $user)
+    {
+        $user = User::with('permissions')->find($user->id);
+        $get = $user->permissions()->whereIn('name', ['Company Balance', 'admin'])->where('active', 1)->first();
+        return $get ? Response::allow()  : Response::deny('غير مصرح لك بالدخول الى هنا ');
     }
 
     /**

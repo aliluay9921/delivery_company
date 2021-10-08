@@ -31,7 +31,9 @@ class IncomePolicy
      */
     public function view(User $user, Income $income)
     {
-        //
+        $user = User::with('permissions')->find($user->id);
+        $get = $user->permissions()->where('name', 'Accounter')->where('active', 1)->first();
+        return $get ? Response::allow()  : Response::deny('You are not the author of the post.');
     }
 
     /**

@@ -31,21 +31,23 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('login', [AuthController::class, 'login']);
 Route::middleware(['auth:api'])->group(function () {
-    Route::get('get_customers', [CustomersController::class, 'getCustomers']);
+    Route::get('get_users', [UserController::class, 'getUsers'])->middleware(['can:view,' . User::class]);
+    Route::get('get_customers', [CustomersController::class, 'getCustomers'])->middleware(['can:view,' . Customer::class]);
     Route::get('customers_account', [CustomersController::class, 'customersAccount']);
     Route::get('drivers_account', [DriverController::class, 'driversAccount']);
-    Route::get('get_drivers', [DriverController::class, 'getDrivers']);
+    Route::get('get_drivers', [DriverController::class, 'getDrivers'])->middleware(['can:view,' . Driver::class]);
     Route::get('get_delivery_price', [DeliveryPriceController::class, 'getDeliveryPrice']);
-    Route::get('get_goods_in_store', [GoodReceviedController::class, 'getGoodsInStore']);
-    Route::get('get_outcomes', [OutcomesController::class, 'getOutcomes']);
-    Route::get('get_incomes', [IncomesController::class, 'getIntcomes']);
-    Route::get('company_balance', [UserController::class, 'companyBalance']);
+    Route::get('get_goods_in_store', [GoodReceviedController::class, 'getGoodsInStore'])->middleware(['can:view,' . GoodReceived::class]);
+    Route::get('get_outcomes', [OutcomesController::class, 'getOutcomes'])->middleware(['can:view,' . Outcome::class]);
+    Route::get('get_incomes', [IncomesController::class, 'getIntcomes'])->middleware(['can:view,' . Income::class]);
+    Route::get('company_balance', [UserController::class, 'companyBalance'])->middleware(['can:companyBalance,' . User::class]);
+
     Route::get('statistics', [UserController::class, 'statistics']);
     Route::get('get_logs', [UserController::class, 'getLogs']);
     Route::get('get_checks', [GoodDriverController::class, 'getChecks']);
 
 
-
+    Route::post('add_delivery_price', [DeliveryPriceController::class, 'addDeliveryPrice']);
     Route::post('add_check', [GoodDriverController::class, 'addCheck'])->middleware(['can:create,' . GoodsDriver::class]);
     Route::post('add_outcome', [OutcomesController::class, 'addOutcome'])->middleware(['can:create,' . Outcome::class]);
     Route::post('add_income', [IncomesController::class, 'addIntcome'])->middleware(['can:create,' . Income::class]);
@@ -57,7 +59,7 @@ Route::middleware(['auth:api'])->group(function () {
 
 
     Route::put('goods_archive', [GoodReceviedController::class, 'goodsArchive'])->middleware(['can:archive,' . GoodReceived::class]);
-    Route::put('edit_goods_in_store', [GoodReceviedController::class, 'editGoodsInStore']);
+    // Route::put('edit_goods_in_store', [GoodReceviedController::class, 'editGoodsInStore']);
     Route::put('change_status_goods', [GoodReceviedController::class, 'changeGoodsStatus'])->middleware(['can:changeGoodsStatus,' . User::class]);
     Route::put('toggle_active_delivery_price', [DeliveryPriceController::class, 'toggleActiveDeliveryPrice']);
 
@@ -72,10 +74,8 @@ Route::middleware(['auth:api'])->group(function () {
 
 
     Route::middleware(['admin'])->group(function () {
-        Route::get('get_users', [UserController::class, 'getUsers']);
         Route::get('get_permissions', [UserController::class, 'getPermissions']);
 
-        Route::post('add_delivery_price', [DeliveryPriceController::class, 'addDeliveryPrice']);
 
 
         Route::delete('delete_user', [UserController::class, 'deleteUser']);
