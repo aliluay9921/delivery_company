@@ -31,7 +31,7 @@ class UserPolicy
     public function view(User $user, User $model)
     {
         $user = User::with('permissions')->find($user->id);
-        $get = $user->permissions()->where('name', 'view employee')->where('active', 1)->first();
+        $get = $user->permissions()->whereIn('name', ['view employee', 'admin'])->where('active', 1)->first();
         return $get ? Response::allow()  : Response::deny('غير مصرح لك بالدخول الى هنا ');
     }
 
