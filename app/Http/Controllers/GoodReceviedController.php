@@ -31,6 +31,14 @@ class GoodReceviedController extends Controller
 
         $good_receiveds = GoodReceived::with(['customer', 'delevery_price', 'goods_driver.driver']);
 
+
+
+        if (isset($_GET['filter'])) {
+            $filter = json_decode($_GET['filter']); //لان اوبجكت لازم تفتحه
+            $good_receiveds->where($filter->name, $filter->value);
+        }
+
+
         if (isset($_GET['query'])) {
             $good_receiveds = $good_receiveds->whereHas('customer', function ($q) {
                 $q->where('name', 'LIKE', '%' . $_GET['query'] . '%');
@@ -40,12 +48,6 @@ class GoodReceviedController extends Controller
                 $good_receiveds->orWhere($column, 'LIKE', '%' . $_GET['query'] . '%');
             }
         }
-
-        if (isset($_GET['filter'])) {
-            $filter = json_decode($_GET['filter']);
-            $good_receiveds->where($filter->name,  $filter->value);
-        }
-
         if (isset($_GET)) {
             foreach ($_GET as $key => $value) {
                 if ($key == 'skip' || $key == 'limit' || $key == 'query' || $key == 'filter') {
