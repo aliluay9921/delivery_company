@@ -2,8 +2,8 @@
 
 namespace App\Exceptions;
 
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
 {
@@ -34,16 +34,15 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
+
         // $this->reportable(function (Throwable $e) {
-        //     //
         // });
+
         $this->renderable(function (Throwable $e, $request) {
-            // if ($e->getStatusCode() == 403)
-            //     return response()->json(["error" => "غير مصرح لك بهذا الاجراء"]);
+
             return response()->json([
-                "status" => $e->getStatusCode(),
-                "error" => $e->getMessage()
-            ]);
+                "message" => $e->getMessage(),
+            ], $e->getStatusCode());
         });
     }
 }
