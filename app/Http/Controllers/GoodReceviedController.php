@@ -45,7 +45,7 @@ class GoodReceviedController extends Controller
             $good_receiveds->whereHas('customer', function ($q) {
                 $q->orwhere('name', 'LIKE', $_GET['query']);
             })->where(function ($q) use ($search) {
-                $q->where('contet', 'LIKE', '%' .  $search . '%')->orWhere('price', 'LIKE', '%' .  $search . '%')->orWhere('type_deliver', 'LIKE', '%' .  $search . '%');
+                $q->where('content', 'LIKE', '%' .  $search . '%')->orWhere('price', 'LIKE', '%' .  $search . '%')->orWhere('type_deliver', 'LIKE', '%' .  $search . '%');
             });
             // $columns = Schema::getColumnListing('good_receiveds');
             // foreach ($columns as $column) {
