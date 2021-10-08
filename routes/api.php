@@ -30,7 +30,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('login', [AuthController::class, 'login']);
-Route::middleware(['auth:api'])->group(function () {
+Route::middleware(['auth:api', 'active'])->group(function () {
     Route::get('get_users', [UserController::class, 'getUsers'])->middleware(['can:view,' . User::class]);
     Route::get('get_customers', [CustomersController::class, 'getCustomers'])->middleware(['can:view,' . Customer::class]);
     Route::get('customers_account', [CustomersController::class, 'customersAccount']);

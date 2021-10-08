@@ -33,7 +33,7 @@ class GoodReceivedPolicy
     {
         $user = User::with('permissions')->find($user->id);
         $get = $user->permissions()->whereIn('name', ['goods Managment', 'admin'])->where('active', 1)->first();
-        return $get ? Response::allow()  : Response::deny('You are not the author of the post.');
+        return $get ? Response::allow()  : Response::deny('غير مصرح لك بالدخول الى هنا');
     }
 
     /**
@@ -46,19 +46,19 @@ class GoodReceivedPolicy
     {
         $user = User::with('permissions')->find($user->id);
         $get = $user->permissions()->whereIn('name', ['goods Managment', 'admin'])->where('active', 1)->first();
-        return $get ? Response::allow()  : Response::deny('You are not the author of the post.');
+        return $get ? Response::allow()  : Response::deny('غير مصرح لك بالدخول الى هنا');
     }
     public function archive(User $user)
     {
         $user = User::with('permissions')->find($user->id);
         $get = $user->permissions()->whereIn('name', ['goods Managment', 'admin'])->where('active', 1)->first();
-        return $get ? Response::allow()  : Response::deny('You are not the author of the post.');
+        return $get ? Response::allow()  : Response::deny('غير مصرح لك بالدخول الى هنا');
     }
     public function changeGoodsStatus(User $user)
     {
         $user = User::with('permissions')->find($user->id);
         $get = $user->permissions()->whereIn('name', ['goods Managment', 'admin'])->where('active', 1)->first();
-        return $get ? Response::allow()  : Response::deny('You are not the author of the post.');
+        return $get ? Response::allow()  : Response::deny('غير مصرح لك بالدخول الى هنا');
     }
 
     /**

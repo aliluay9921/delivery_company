@@ -33,7 +33,7 @@ class CustomerPolicy
     {
         $user = User::with('permissions')->find($user->id);
         $get = $user->permissions()->whereIn('name', ['view customer', 'admin'])->where('active', 1)->first();
-        return $get ? Response::allow()  : Response::deny('You are not the author of the post.');
+        return $get ? Response::allow()  : Response::deny('غير مصرح لك بالدخول الى هنا');
     }
 
     /**
@@ -46,7 +46,7 @@ class CustomerPolicy
     {
         $user = User::with('permissions')->find($user->id);
         $get = $user->permissions()->whereIn('name', ['add customer', 'admin'])->where('active', 1)->first();
-        return $get ? Response::allow()  : Response::deny('You are not the author of the post.');
+        return $get ? Response::allow()  : Response::deny('غير مصرح لك بالدخول الى هنا');
     }
 
     /**
@@ -60,13 +60,13 @@ class CustomerPolicy
     {
         $user = User::with('permissions')->find($user->id);
         $get = $user->permissions()->whereIn('name', ['edit customer', 'admin'])->where('active', 1)->first();
-        return $get ? Response::allow()  : Response::deny('You are not the author of the post.');
+        return $get ? Response::allow()  : Response::deny('غير مصرح لك بالدخول الى هنا');
     }
     public function toggleActiveCustomer(User $user)
     {
         $user = User::with('permissions')->find($user->id);
         $get = $user->permissions()->whereIn('name', ['edit customer', 'admin'])->where('active', 1)->first();
-        return $get ? Response::allow()  : Response::deny('You are not the author of the post.');
+        return $get ? Response::allow()  : Response::deny('غير مصرح لك بالدخول الى هنا');
     }
 
     /**

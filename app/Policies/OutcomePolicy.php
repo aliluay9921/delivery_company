@@ -33,7 +33,7 @@ class OutcomePolicy
     {
         $user = User::with('permissions')->find($user->id);
         $get = $user->permissions()->whereIn('name', ['Accounter', 'admin'])->where('active', 1)->first();
-        return $get ? Response::allow()  : Response::deny('You are not the author of the post.');
+        return $get ? Response::allow()  : Response::deny('غير مصرح لك بالدخول الى هنا');
     }
 
     /**
@@ -46,7 +46,7 @@ class OutcomePolicy
     {
         $user = User::with('permissions')->find($user->id);
         $get = $user->permissions()->whereIn('name', ['Accounter', 'admin'])->where('active', 1)->first();
-        return $get ? Response::allow()  : Response::deny('You are not the author of the post.');
+        return $get ? Response::allow()  : Response::deny('غير مصرح لك بالدخول الى هنا');
     }
 
     /**

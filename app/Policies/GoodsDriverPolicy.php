@@ -7,7 +7,7 @@ use App\Models\GooDsDriver;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class GoodDriverPolicy
+class GoodsDriverPolicy
 {
     use HandlesAuthorization;
 
@@ -44,7 +44,7 @@ class GoodDriverPolicy
     {
         $user = User::with('permissions')->find($user->id);
         $get = $user->permissions()->whereIn('name', ['goods Managment', 'admin'])->where('active', 1)->first();
-        return $get ? Response::allow()  : Response::deny('You are not the author of the post.');
+        return $get ? Response::allow()  : Response::deny('غير مصرح لك بالدخول الى هنا');
     }
 
     /**
