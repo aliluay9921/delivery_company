@@ -43,7 +43,7 @@ class GoodDriverPolicy
     public function create(User $user)
     {
         $user = User::with('permissions')->find($user->id);
-        $get = $user->permissions()->where('name', 'goods Managment')->where('active', 1)->first();
+        $get = $user->permissions()->whereIn('name', ['goods Managment', 'admin'])->where('active', 1)->first();
         return $get ? Response::allow()  : Response::deny('You are not the author of the post.');
     }
 

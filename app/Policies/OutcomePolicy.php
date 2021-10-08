@@ -29,10 +29,10 @@ class OutcomePolicy
      * @param  \App\Models\Outcome  $outcome
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Outcome $outcome)
+    public function view(User $user)
     {
         $user = User::with('permissions')->find($user->id);
-        $get = $user->permissions()->where('name', 'Accounter')->where('active', 1)->first();
+        $get = $user->permissions()->whereIn('name', ['Accounter', 'admin'])->where('active', 1)->first();
         return $get ? Response::allow()  : Response::deny('You are not the author of the post.');
     }
 
@@ -45,7 +45,7 @@ class OutcomePolicy
     public function create(User $user)
     {
         $user = User::with('permissions')->find($user->id);
-        $get = $user->permissions()->where('name', 'Accounter')->where('active', 1)->first();
+        $get = $user->permissions()->whereIn('name', ['Accounter', 'admin'])->where('active', 1)->first();
         return $get ? Response::allow()  : Response::deny('You are not the author of the post.');
     }
 

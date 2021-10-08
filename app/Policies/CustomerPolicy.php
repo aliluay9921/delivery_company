@@ -29,7 +29,7 @@ class CustomerPolicy
      * @param  \App\Models\Customer  $customer
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Customer $customer)
+    public function view(User $user)
     {
         $user = User::with('permissions')->find($user->id);
         $get = $user->permissions()->whereIn('name', ['view customer', 'admin'])->where('active', 1)->first();
@@ -59,13 +59,13 @@ class CustomerPolicy
     public function update(User $user)
     {
         $user = User::with('permissions')->find($user->id);
-        $get = $user->permissions()->where('name', 'edit customer')->where('active', 1)->first();
+        $get = $user->permissions()->whereIn('name', ['edit customer', 'admin'])->where('active', 1)->first();
         return $get ? Response::allow()  : Response::deny('You are not the author of the post.');
     }
     public function toggleActiveCustomer(User $user)
     {
         $user = User::with('permissions')->find($user->id);
-        $get = $user->permissions()->where('name', 'edit customer')->where('active', 1)->first();
+        $get = $user->permissions()->whereIn('name', ['edit customer', 'admin'])->where('active', 1)->first();
         return $get ? Response::allow()  : Response::deny('You are not the author of the post.');
     }
 
