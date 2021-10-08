@@ -31,23 +31,36 @@ class GoodReceviedController extends Controller
 
         $good_receiveds = GoodReceived::with(['customer', 'delevery_price', 'goods_driver.driver']);
 
-
-
         if (isset($_GET['filter'])) {
             $filter = json_decode($_GET['filter']); //لان اوبجكت لازم تفتحه
             $good_receiveds->where($filter->name, $filter->value);
         }
 
 
+
+
         if (isset($_GET['query'])) {
-            $good_receiveds = $good_receiveds->whereHas('customer', function ($q) {
-                $q->where('name', 'LIKE', '%' . $_GET['query'] . '%');
+
+            $search = $_GET['query'];
+            $good_receiveds->whereHas('customer', function ($q) {
+                $q->orwhere('name', 'LIKE', $_GET['query']);
+            })->where(function ($q) use ($search) {
+                $q->where('content', 'LIKE', '%' .  $search . '%')->orWhere('price', 'LIKE', '%' .  $search . '%')->orWhere('type_deliver', 'LIKE', '%' .  $search . '%');
             });
-            $columns = Schema::getColumnListing('good_receiveds');
-            foreach ($columns as $column) {
-                $good_receiveds->orWhere($column, 'LIKE', '%' . $_GET['query'] . '%');
-            }
+            // $columns = Schema::getColumnListing('good_receiveds');
+            // foreach ($columns as $column) {
+            //     $good_receiveds->orWhere($column, 'LIKE', '%' . $_GET['query'] . '%');
+            // }
+
+            // $good_receiveds->where(function ($q) use ($search) {
+            //     $q->where('content', 'LIKE', '%' .  $search . '%')->orWhere('price', 'LIKE', '%' .  $search . '%')->orWhere('type_deliver', 'LIKE', '%' .  $search . '%');
+            // });
+
+            // $good_receiveds->where('content', 'LIKE', '%' .  $_GET['query'] . '%')->orWhere('price', 'LIKE', '%' .  $_GET['query'] . '%')->orWhere('type_deliver', 'LIKE', '%' .  $_GET['query'] . '%');
         }
+
+
+
         if (isset($_GET)) {
             foreach ($_GET as $key => $value) {
                 if ($key == 'skip' || $key == 'limit' || $key == 'query' || $key == 'filter') {
