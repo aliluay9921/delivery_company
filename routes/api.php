@@ -72,7 +72,6 @@ Route::middleware(['auth:api', 'active'])->group(function () {
     Route::put('edit_customer', [CustomersController::class, 'editCustomer'])->middleware(['can:update,' . Customer::class]);
 
 
-
     Route::middleware(['admin'])->group(function () {
         Route::get('get_permissions', [UserController::class, 'getPermissions']);
 
