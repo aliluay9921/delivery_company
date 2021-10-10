@@ -35,19 +35,19 @@ class GoodReceviedController extends Controller
             $filter = json_decode($_GET['filter']); //لان اوبجكت لازم تفتحه
             $good_receiveds->where($filter->name, $filter->value);
         }
-        $good_receiveds->where(function ($q) {
-            if (isset($_GET['query'])) {
+        if (isset($_GET['query'])) {
+            $good_receiveds->where(function ($q) {
 
                 $columns = Schema::getColumnListing('good_receiveds');
                 $q->whereHas('customer', function ($q) {
-                    $q->orwhere('name', 'LIKE', $_GET['query']);
+                    $q->where('name', 'LIKE', $_GET['query']);
                 });
+                error_log(json_encode($_GET));
                 foreach ($columns as $column) {
                     $q->orWhere($column, 'LIKE', '%' . $_GET['query'] . '%');
                 }
-            }
-        });
-
+            });
+        }
 
         if (isset($_GET)) {
             foreach ($_GET as $key => $value) {
