@@ -81,6 +81,7 @@ class GoodDriverController extends Controller
                 'final_price'   => $price
             ]);
 
+            // return $check;
             Log::create([
                 'target_id' => $request['driver_id'],
                 'value' => $price,
@@ -89,6 +90,7 @@ class GoodDriverController extends Controller
                 'user_id'   => auth()->user()->id,
                 'note' => $goods->note,
             ]);
+            $price = 0;
         }
         $good_receiveds = GoodReceived::with(['customer', 'delevery_price', 'goods_driver.driver'])->whereIn('id', $request['goods_received_id']);
         return $this->send_response(200, 'تم انشاء وصل', [], $good_receiveds->get());
