@@ -60,8 +60,18 @@ class GoodDriverController extends Controller
         }
         $price = 0;
         foreach ($request['goods_received_id'] as $good) {
+
+
             $goods = GoodReceived::find($good);
-            $price = $goods->delevery_price->company_cost + $goods->delevery_price->driver_cost + $goods->price;
+            // return $goods->type_deliver;
+            if ($goods->type_deliver == 0) {
+                $price += $goods->price;
+            } elseif ($goods->type_deliver == 2) {
+                $price += 0;
+            } else {
+                $price += $goods->delevery_price->company_cost + $goods->delevery_price->driver_cost + $goods->price;
+            }
+
             $goods->update([
                 'order_status' => 1
             ]);
@@ -70,6 +80,7 @@ class GoodDriverController extends Controller
                 'goods_received_id' => $good,
                 'final_price'   => $price
             ]);
+
             Log::create([
                 'target_id' => $request['driver_id'],
                 'value' => $price,
