@@ -163,14 +163,20 @@ class GoodReceviedController extends Controller
         $data = [
             'customer_id' => $request['customer_id'],
             'delivery_price_id' => $request['delivery_price_id'],
-            'type_deliver' => $request['type_deliver'],
             'buyers_address' => $request['buyers_address'],
             'buyers_phone1' => $request['buyers_phone1'],
             'buyers_name' => $request['buyers_name'],
             'content' => $request['content'],
             'quantity' => $request['quantity'],
-            'price' => $request['price'],
+            'type_deliver' => $request['type_deliver'],
+            'order_status' => 0,
+            'code' => $this->random_code(),
         ];
+        if ($request['type_deliver'] == 2) {
+            $data['price'] = 0;
+        } else {
+            $data['price'] = $request['price'];
+        }
         if (array_key_exists('buyers_phone2', $request)) {
             $data['buyers_phone2'] = $request['buyers_phone2'];
         }
